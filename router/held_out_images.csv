@@ -1,0 +1,251 @@
+image_path,true_label
+data\test\Orange__Healthy\Screen Shot 2018-06-12 at 11.53.33 PM.png,Orange__Healthy
+data\test\Tomato__Healthy\freshTomato (219).jpg,Tomato__Healthy
+data\test\Pomegranate__Rotten\RottenPomegranate (121).jpg,Pomegranate__Rotten
+data\test\Orange__Rotten\rotated_by_45_Screen Shot 2018-06-12 at 11.33.00 PM.png,Orange__Rotten
+data\test\Bellpepper__Rotten\rottenPepper (645).jpg,Bellpepper__Rotten
+data\test\Tomato__Healthy\freshTomato (70).jpg,Tomato__Healthy
+data\test\Apple__Rotten\rotated_by_60_Screen Shot 2018-06-08 at 2.41.54 PM.png,Apple__Rotten
+data\test\Banana__Healthy\rotated_by_60_Screen Shot 2018-06-12 at 9.52.26 PM.png,Banana__Healthy
+data\test\Orange__Rotten\rottenOrange (55).jpg,Orange__Rotten
+data\test\Carrot__Rotten\rottenCarrot (310).jpg,Carrot__Rotten
+data\test\Potato__Healthy\freshPotato (513).jpg,Potato__Healthy
+data\test\Strawberry__Healthy\782.jpg,Strawberry__Healthy
+data\test\Banana__Rotten\rotated_by_75_Screen Shot 2018-06-12 at 8.56.41 PM.png,Banana__Rotten
+data\test\Apple__Healthy\rotated_by_45_Screen Shot 2018-06-08 at 5.00.50 PM.png,Apple__Healthy
+data\test\Jujube__Rotten\RottenJujube (130).jpg,Jujube__Rotten
+data\test\Apple__Rotten\rottenApple (57).jpg,Apple__Rotten
+data\test\Bellpepper__Rotten\rottenPepper (520).jpg,Bellpepper__Rotten
+data\test\Banana__Healthy\rotated_by_45_Screen Shot 2018-06-12 at 9.46.02 PM.png,Banana__Healthy
+data\test\Banana__Rotten\translation_Screen Shot 2018-06-12 at 9.08.22 PM.png,Banana__Rotten
+data\test\Apple__Rotten\saltandpepper_Screen Shot 2018-06-08 at 2.38.54 PM.png,Apple__Rotten
+data\test\Banana__Healthy\freshBanana (40).jpg,Banana__Healthy
+data\test\Strawberry__Healthy\371.jpg,Strawberry__Healthy
+data\test\Tomato__Rotten\rottenTomato (529).jpg,Tomato__Rotten
+data\test\Cucumber__Rotten\rottenCucumber (579).jpg,Cucumber__Rotten
+data\test\Apple__Rotten\vertical_flip_Screen Shot 2018-06-07 at 2.18.13 PM.png,Apple__Rotten
+data\test\Carrot__Rotten\rottenCarrot (268).jpg,Carrot__Rotten
+data\test\Mango__Rotten\782.jpg,Mango__Rotten
+data\test\Strawberry__Healthy\677.jpg,Strawberry__Healthy
+data\test\Orange__Rotten\rottenOrange (477).jpg,Orange__Rotten
+data\test\Banana__Rotten\rotated_by_75_Screen Shot 2018-06-12 at 8.55.28 PM.png,Banana__Rotten
+data\test\Strawberry__Healthy\45.jpg,Strawberry__Healthy
+data\test\Orange__Rotten\rotated_by_15_Screen Shot 2018-06-12 at 11.19.56 PM.png,Orange__Rotten
+data\test\Strawberry__Rotten\227.jpg,Strawberry__Rotten
+data\test\Banana__Healthy\rotated_by_15_Screen Shot 2018-06-12 at 9.44.19 PM.png,Banana__Healthy
+data\test\Mango__Rotten\anthracnose_085.jpg,Mango__Rotten
+data\test\Orange__Rotten\rottenOrange (360).jpg,Orange__Rotten
+data\test\Carrot__Healthy\freshCarrot (54).jpg,Carrot__Healthy
+data\test\Potato__Healthy\freshPotato (94).jpg,Potato__Healthy
+data\test\Banana__Rotten\rotated_by_15_Screen Shot 2018-06-12 at 8.53.09 PM.png,Banana__Rotten
+data\test\Jujube__Healthy\FreshJujube (51).jpg,Jujube__Healthy
+data\test\Banana__Rotten\rotated_by_60_Screen Shot 2018-06-12 at 8.52.42 PM.png,Banana__Rotten
+data\test\Mango__Healthy\574.jpg,Mango__Healthy
+data\test\Strawberry__Healthy\freshStrawberry (6).jpg,Strawberry__Healthy
+data\test\Mango__Healthy\freshMango (172).png,Mango__Healthy
+data\test\Mango__Rotten\lasio_048.jpg,Mango__Rotten
+data\test\Strawberry__Healthy\707.jpg,Strawberry__Healthy
+data\test\Carrot__Healthy\freshCarrot (116).jpg,Carrot__Healthy
+data\test\Bellpepper__Rotten\rottenPepper (345).jpg,Bellpepper__Rotten
+data\test\Banana__Rotten\rotated_by_75_Screen Shot 2018-06-12 at 9.27.41 PM.png,Banana__Rotten
+data\test\Tomato__Healthy\freshTomato (311).png,Tomato__Healthy
+data\test\Orange__Rotten\vertical_flip_Screen Shot 2018-06-12 at 11.37.36 PM.png,Orange__Rotten
+data\test\Orange__Healthy\rotated_by_15_Screen Shot 2018-06-13 at 12.17.31 AM.png,Orange__Healthy
+data\test\Potato__Healthy\freshPotato (125).jpg,Potato__Healthy
+data\test\Mango__Rotten\alternaria_036.jpg,Mango__Rotten
+data\test\Banana__Rotten\rotated_by_30_Screen Shot 2018-06-12 at 9.27.35 PM.png,Banana__Rotten
+data\test\Guava__Rotten\RottenGuava (16).jpg,Guava__Rotten
+data\test\Orange__Healthy\freshOrange (24).png,Orange__Healthy
+data\test\Strawberry__Rotten\146.jpg,Strawberry__Rotten
+data\test\Apple__Rotten\Screen Shot 2018-06-07 at 2.47.20 PM.png,Apple__Rotten
+data\test\Cucumber__Rotten\rottenCucumber (23).jpg,Cucumber__Rotten
+data\test\Mango__Healthy\672.jpg,Mango__Healthy
+data\test\Cucumber__Healthy\freshCucumber (471).jpg,Cucumber__Healthy
+data\test\Apple__Healthy\rotated_by_30_Screen Shot 2018-06-08 at 5.25.22 PM.png,Apple__Healthy
+data\test\Mango__Healthy\927.jpg,Mango__Healthy
+data\test\Apple__Rotten\translation_Screen Shot 2018-06-08 at 2.42.58 PM.png,Apple__Rotten
+data\test\Mango__Rotten\715.jpg,Mango__Rotten
+data\test\Potato__Rotten\rottenPotato (544).jpg,Potato__Rotten
+data\test\Apple__Rotten\Screen Shot 2018-06-07 at 2.43.34 PM.png,Apple__Rotten
+data\test\Tomato__Rotten\rottenTomato (341).jpg,Tomato__Rotten
+data\test\Apple__Rotten\rottenApple (551).jpg,Apple__Rotten
+data\test\Mango__Rotten\8.jpg,Mango__Rotten
+data\test\Carrot__Healthy\freshCarrot (581).jpg,Carrot__Healthy
+data\test\Apple__Healthy\vertical_flip_Screen Shot 2018-06-08 at 5.00.50 PM.png,Apple__Healthy
+data\test\Apple__Healthy\freshApple (765).png,Apple__Healthy
+data\test\Pomegranate__Healthy\FreshPomegranate (178).jpg,Pomegranate__Healthy
+data\test\Orange__Healthy\freshOrange (306).jpg,Orange__Healthy
+data\test\Apple__Healthy\rotated_by_15_Screen Shot 2018-06-08 at 5.13.02 PM.png,Apple__Healthy
+data\test\Orange__Healthy\rotated_by_60_Screen Shot 2018-06-13 at 12.19.36 AM.png,Orange__Healthy
+data\test\Apple__Rotten\rotated_by_60_Screen Shot 2018-06-07 at 2.21.09 PM.png,Apple__Rotten
+data\test\Apple__Healthy\translation_Screen Shot 2018-06-08 at 5.18.26 PM.png,Apple__Healthy
+data\test\Orange__Rotten\rotated_by_30_Screen Shot 2018-06-12 at 11.30.28 PM.png,Orange__Rotten
+data\test\Bellpepper__Healthy\freshPepper (245).jpg,Bellpepper__Healthy
+data\test\Mango__Rotten\483.jpg,Mango__Rotten
+data\test\Mango__Rotten\lasio_158.jpg,Mango__Rotten
+data\test\Mango__Healthy\975.jpg,Mango__Healthy
+data\test\Cucumber__Healthy\freshCucumber (512).jpg,Cucumber__Healthy
+data\test\Potato__Healthy\freshPotato (211).jpg,Potato__Healthy
+data\test\Orange__Healthy\freshOrange (87).jpg,Orange__Healthy
+data\test\Orange__Rotten\vertical_flip_Screen Shot 2018-06-12 at 11.46.26 PM.png,Orange__Rotten
+data\test\Strawberry__Rotten\rottenStrawberry (197).jpg,Strawberry__Rotten
+data\test\Strawberry__Healthy\freshStrawberry (565).jpg,Strawberry__Healthy
+data\test\Apple__Rotten\rotated_by_15_Screen Shot 2018-06-07 at 2.46.12 PM.png,Apple__Rotten
+data\test\Banana__Healthy\freshBanana (205).jpg,Banana__Healthy
+data\test\Potato__Rotten\rottenPotato (48).jpg,Potato__Rotten
+data\test\Orange__Healthy\freshOrange (262).png,Orange__Healthy
+data\test\Apple__Rotten\saltandpepper_Screen Shot 2018-06-07 at 3.00.00 PM.png,Apple__Rotten
+data\test\Apple__Rotten\vertical_flip_Screen Shot 2018-06-08 at 2.47.09 PM.png,Apple__Rotten
+data\test\Banana__Healthy\freshBanana (427).jpg,Banana__Healthy
+data\test\Apple__Healthy\rotated_by_30_Screen Shot 2018-06-08 at 5.34.01 PM.png,Apple__Healthy
+data\test\Strawberry__Rotten\661.jpg,Strawberry__Rotten
+data\test\Bellpepper__Healthy\freshPepper (194).jpg,Bellpepper__Healthy
+data\test\Tomato__Rotten\rottenTomato (318).jpg,Tomato__Rotten
+data\test\Carrot__Rotten\rottenCarrot (8).jpg,Carrot__Rotten
+data\test\Mango__Healthy\507.jpg,Mango__Healthy
+data\test\Banana__Rotten\rotated_by_30_Screen Shot 2018-06-12 at 8.56.49 PM.png,Banana__Rotten
+data\test\Strawberry__Healthy\freshStrawberry (223).jpg,Strawberry__Healthy
+data\test\Apple__Healthy\rotated_by_45_Screen Shot 2018-06-08 at 5.26.36 PM.png,Apple__Healthy
+data\test\Apple__Healthy\FreshApple (110).jpg,Apple__Healthy
+data\test\Tomato__Rotten\rottenTomato (90).jpg,Tomato__Rotten
+data\test\Banana__Healthy\rotated_by_75_Screen Shot 2018-06-12 at 9.52.45 PM.png,Banana__Healthy
+data\test\Orange__Rotten\rotated_by_75_Screen Shot 2018-06-12 at 11.31.17 PM.png,Orange__Rotten
+data\test\Bellpepper__Rotten\rottenPepper (159).jpg,Bellpepper__Rotten
+data\test\Banana__Rotten\rotated_by_75_Screen Shot 2018-06-12 at 9.03.01 PM.png,Banana__Rotten
+data\test\Banana__Rotten\translation_Screen Shot 2018-06-12 at 9.16.34 PM.png,Banana__Rotten
+data\test\Banana__Rotten\rotated_by_45_Screen Shot 2018-06-12 at 9.14.22 PM.png,Banana__Rotten
+data\test\Apple__Healthy\rotated_by_75_Screen Shot 2018-06-08 at 5.28.15 PM.png,Apple__Healthy
+data\test\Apple__Healthy\saltandpepper_Screen Shot 2018-06-08 at 5.04.11 PM.png,Apple__Healthy
+data\test\Banana__Rotten\rotated_by_15_Screen Shot 2018-06-12 at 9.22.37 PM.png,Banana__Rotten
+data\test\Banana__Rotten\rotated_by_30_Screen Shot 2018-06-12 at 8.55.21 PM.png,Banana__Rotten
+data\test\Strawberry__Rotten\rottenStrawberry (318).jpg,Strawberry__Rotten
+data\test\Orange__Healthy\freshOrange (221).png,Orange__Healthy
+data\test\Apple__Healthy\rotated_by_15_Screen Shot 2018-06-08 at 5.26.36 PM.png,Apple__Healthy
+data\test\Tomato__Healthy\freshTomato (246).png,Tomato__Healthy
+data\test\Mango__Healthy\freshMango (241).jpg,Mango__Healthy
+data\test\Cucumber__Healthy\freshCucumber (289).jpg,Cucumber__Healthy
+data\test\Apple__Healthy\freshApple (550).png,Apple__Healthy
+data\test\Banana__Healthy\saltandpepper_Screen Shot 2018-06-12 at 9.53.07 PM.png,Banana__Healthy
+data\test\Mango__Healthy\412.jpg,Mango__Healthy
+data\test\Cucumber__Healthy\freshCucumber (259).jpg,Cucumber__Healthy
+data\test\Tomato__Healthy\freshTomato (142).jpg,Tomato__Healthy
+data\test\Banana__Rotten\Screen Shot 2018-06-12 at 9.09.43 PM.png,Banana__Rotten
+data\test\Strawberry__Rotten\676.jpg,Strawberry__Rotten
+data\test\Strawberry__Rotten\rottenStrawberry (498).jpg,Strawberry__Rotten
+data\test\Apple__Rotten\Screen Shot 2018-06-08 at 2.49.40 PM.png,Apple__Rotten
+data\test\Banana__Healthy\rotated_by_60_Screen Shot 2018-06-12 at 9.47.51 PM.png,Banana__Healthy
+data\test\Bellpepper__Rotten\rottenPepper (355).jpg,Bellpepper__Rotten
+data\test\Orange__Healthy\rotated_by_15_Screen Shot 2018-06-13 at 12.14.03 AM.png,Orange__Healthy
+data\test\Orange__Healthy\vertical_flip_Screen Shot 2018-06-13 at 12.18.52 AM.png,Orange__Healthy
+data\test\Mango__Rotten\rottenMango (95).jpg,Mango__Rotten
+data\test\Apple__Rotten\rotated_by_60_Screen Shot 2018-06-07 at 2.54.58 PM.png,Apple__Rotten
+data\test\Apple__Healthy\rotated_by_75_Screen Shot 2018-06-08 at 5.10.29 PM.png,Apple__Healthy
+data\test\Strawberry__Rotten\rottenStrawberry (388).jpg,Strawberry__Rotten
+data\test\Banana__Rotten\rotated_by_75_Screen Shot 2018-06-12 at 9.25.34 PM.png,Banana__Rotten
+data\test\Cucumber__Rotten\rottenCucumber (145).jpg,Cucumber__Rotten
+data\test\Strawberry__Rotten\rottenStrawberry (389).jpg,Strawberry__Rotten
+data\test\Apple__Rotten\rottenApple (110).jpg,Apple__Rotten
+data\test\Carrot__Healthy\freshCarrot (216).jpg,Carrot__Healthy
+data\test\Strawberry__Healthy\444.jpg,Strawberry__Healthy
+data\test\Banana__Healthy\rotated_by_75_Screen Shot 2018-06-12 at 9.43.03 PM.png,Banana__Healthy
+data\test\Banana__Rotten\translation_Screen Shot 2018-06-12 at 8.57.04 PM.png,Banana__Rotten
+data\test\Jujube__Rotten\RottenJujube (36).jpg,Jujube__Rotten
+data\test\Apple__Rotten\rottenApple (210).jpg,Apple__Rotten
+data\test\Strawberry__Healthy\701.jpg,Strawberry__Healthy
+data\test\Orange__Rotten\rottenOrange (302).jpg,Orange__Rotten
+data\test\Apple__Rotten\Screen Shot 2018-06-07 at 2.47.27 PM.png,Apple__Rotten
+data\test\Banana__Rotten\rotated_by_15_Screen Shot 2018-06-12 at 9.02.52 PM.png,Banana__Rotten
+data\test\Banana__Healthy\rotated_by_75_Screen Shot 2018-06-12 at 10.01.07 PM.png,Banana__Healthy
+data\test\Apple__Healthy\FreshApple (124).jpg,Apple__Healthy
+data\test\Orange__Healthy\freshOrange (106).png,Orange__Healthy
+data\test\Strawberry__Healthy\436.jpg,Strawberry__Healthy
+data\test\Strawberry__Rotten\651.jpg,Strawberry__Rotten
+data\test\Guava__Rotten\RottenGuava (133).jpg,Guava__Rotten
+data\test\Strawberry__Healthy\575.jpg,Strawberry__Healthy
+data\test\Orange__Rotten\rottenOrange (36).jpg,Orange__Rotten
+data\test\Orange__Healthy\Screen Shot 2018-06-13 at 12.11.02 AM.png,Orange__Healthy
+data\test\Jujube__Healthy\FreshJujube (3).jpg,Jujube__Healthy
+data\test\Orange__Healthy\saltandpepper_Screen Shot 2018-06-13 at 12.02.20 AM.png,Orange__Healthy
+data\test\Apple__Healthy\rotated_by_60_Screen Shot 2018-06-08 at 5.26.05 PM.png,Apple__Healthy
+data\test\Banana__Healthy\rotated_by_30_Screen Shot 2018-06-12 at 9.51.29 PM.png,Banana__Healthy
+data\test\Tomato__Healthy\freshTomato (315).png,Tomato__Healthy
+data\test\Banana__Rotten\translation_Screen Shot 2018-06-12 at 8.55.35 PM.png,Banana__Rotten
+data\test\Mango__Healthy\899.jpg,Mango__Healthy
+data\test\Banana__Rotten\rottenBanana (466).jpg,Banana__Rotten
+data\test\Potato__Rotten\rottenPotato (19).jpg,Potato__Rotten
+data\test\Mango__Healthy\freshMango (116).jpg,Mango__Healthy
+data\test\Mango__Healthy\630.jpg,Mango__Healthy
+data\test\Apple__Healthy\freshApple (677).png,Apple__Healthy
+data\test\Banana__Rotten\saltandpepper_Screen Shot 2018-06-12 at 8.55.21 PM.png,Banana__Rotten
+data\test\Apple__Rotten\saltandpepper_Screen Shot 2018-06-07 at 2.37.11 PM.png,Apple__Rotten
+data\test\Bellpepper__Rotten\rottenPepper (400).jpg,Bellpepper__Rotten
+data\test\Carrot__Healthy\freshCarrot (326).jpg,Carrot__Healthy
+data\test\Cucumber__Healthy\freshCucumber (575).jpg,Cucumber__Healthy
+data\test\Mango__Rotten\rottenMango (546).jpg,Mango__Rotten
+data\test\Mango__Healthy\382.jpg,Mango__Healthy
+data\test\Apple__Healthy\freshApple (488).png,Apple__Healthy
+data\test\Strawberry__Rotten\85.jpg,Strawberry__Rotten
+data\test\Orange__Rotten\rotated_by_30_Screen Shot 2018-06-12 at 11.24.51 PM.png,Orange__Rotten
+data\test\Strawberry__Rotten\597.jpg,Strawberry__Rotten
+data\test\Mango__Rotten\3.jpg,Mango__Rotten
+data\test\Mango__Rotten\lasio_074.jpg,Mango__Rotten
+data\test\Strawberry__Healthy\441.jpg,Strawberry__Healthy
+data\test\Strawberry__Rotten\80.jpg,Strawberry__Rotten
+data\test\Banana__Healthy\rotated_by_30_Screen Shot 2018-06-12 at 10.01.58 PM.png,Banana__Healthy
+data\test\Cucumber__Rotten\rottenCucumber (295).jpg,Cucumber__Rotten
+data\test\Guava__Healthy\FreshGuava (165).jpg,Guava__Healthy
+data\test\Strawberry__Healthy\435.jpg,Strawberry__Healthy
+data\test\Banana__Healthy\freshBanana (95).png,Banana__Healthy
+data\test\Tomato__Healthy\freshTomato (77).png,Tomato__Healthy
+data\test\Orange__Healthy\vertical_flip_Screen Shot 2018-06-13 at 12.05.13 AM.png,Orange__Healthy
+data\test\Orange__Healthy\freshOrange (249).png,Orange__Healthy
+data\test\Banana__Rotten\rotated_by_75_Screen Shot 2018-06-12 at 9.12.17 PM.png,Banana__Rotten
+data\test\Jujube__Rotten\RottenJujube (34).jpg,Jujube__Rotten
+data\test\Apple__Rotten\Screen Shot 2018-06-08 at 2.23.40 PM.png,Apple__Rotten
+data\test\Tomato__Healthy\freshTomato (262).jpg,Tomato__Healthy
+data\test\Strawberry__Rotten\649.jpg,Strawberry__Rotten
+data\test\Tomato__Healthy\freshTomato (206).png,Tomato__Healthy
+data\test\Banana__Rotten\Screen Shot 2018-06-12 at 9.01.35 PM.png,Banana__Rotten
+data\test\Orange__Rotten\rotated_by_30_Screen Shot 2018-06-12 at 11.34.13 PM.png,Orange__Rotten
+data\test\Mango__Rotten\763.jpg,Mango__Rotten
+data\test\Orange__Healthy\freshOrange (137).png,Orange__Healthy
+data\test\Banana__Rotten\saltandpepper_Screen Shot 2018-06-12 at 9.25.18 PM.png,Banana__Rotten
+data\test\Apple__Rotten\rotated_by_15_Screen Shot 2018-06-08 at 2.50.55 PM.png,Apple__Rotten
+data\test\Tomato__Healthy\freshTomato (245).jpg,Tomato__Healthy
+data\test\Mango__Rotten\362.jpg,Mango__Rotten
+data\test\Cucumber__Healthy\freshCucumber (413).jpg,Cucumber__Healthy
+data\test\Banana__Healthy\freshBanana (174).png,Banana__Healthy
+data\test\Strawberry__Rotten\153.jpg,Strawberry__Rotten
+data\test\Strawberry__Healthy\724.jpg,Strawberry__Healthy
+data\test\Apple__Rotten\Screen Shot 2018-06-08 at 2.35.25 PM.png,Apple__Rotten
+data\test\Apple__Rotten\saltandpepper_Screen Shot 2018-06-08 at 2.23.40 PM.png,Apple__Rotten
+data\test\Bellpepper__Healthy\freshPepper (526).jpg,Bellpepper__Healthy
+data\test\Potato__Rotten\rottenPotato (441).jpg,Potato__Rotten
+data\test\Tomato__Rotten\rottenTomato (346).jpg,Tomato__Rotten
+data\test\Strawberry__Rotten\6.jpg,Strawberry__Rotten
+data\test\Strawberry__Healthy\187.jpg,Strawberry__Healthy
+data\test\Strawberry__Rotten\rottenStrawberry (212).jpg,Strawberry__Rotten
+data\test\Banana__Healthy\Banana__Healthy_augmented_10.jpg,Banana__Healthy
+data\test\Apple__Rotten\rotated_by_60_Screen Shot 2018-06-08 at 2.30.57 PM.png,Apple__Rotten
+data\test\Potato__Healthy\freshPotato (447).jpg,Potato__Healthy
+data\test\Mango__Rotten\rottenMango (11).jpg,Mango__Rotten
+data\test\Strawberry__Rotten\155.jpg,Strawberry__Rotten
+data\test\Banana__Rotten\rotated_by_30_Screen Shot 2018-06-12 at 9.10.04 PM.png,Banana__Rotten
+data\test\Mango__Rotten\551.jpg,Mango__Rotten
+data\test\Tomato__Healthy\freshTomato (65).png,Tomato__Healthy
+data\test\Orange__Rotten\translation_Screen Shot 2018-06-12 at 11.26.24 PM.png,Orange__Rotten
+data\test\Cucumber__Rotten\rottenCucumber (319).jpg,Cucumber__Rotten
+data\test\Pomegranate__Healthy\FreshPomegranate (16).jpg,Pomegranate__Healthy
+data\test\Apple__Rotten\rottenApple (154).jpg,Apple__Rotten
+data\test\Bellpepper__Rotten\rottenPepper (338).jpg,Bellpepper__Rotten
+data\test\Orange__Rotten\saltandpepper_Screen Shot 2018-06-12 at 11.27.38 PM.png,Orange__Rotten
+data\test\Strawberry__Healthy\190.jpg,Strawberry__Healthy
+data\test\Orange__Rotten\rotated_by_15_Screen Shot 2018-06-12 at 11.20.59 PM.png,Orange__Rotten
+data\test\Apple__Rotten\Screen Shot 2018-06-08 at 2.42.22 PM.png,Apple__Rotten
+data\test\Apple__Healthy\rotated_by_30_Screen Shot 2018-06-08 at 5.11.02 PM.png,Apple__Healthy
+data\test\Tomato__Healthy\freshTomato (175).png,Tomato__Healthy
+data\test\Apple__Healthy\vertical_flip_Screen Shot 2018-06-08 at 5.18.58 PM.png,Apple__Healthy
+data\test\Pomegranate__Healthy\FreshPomegranate (140).jpg,Pomegranate__Healthy
+data\test\Strawberry__Healthy\865.jpg,Strawberry__Healthy
+data\test\Strawberry__Healthy\freshStrawberry (588).jpg,Strawberry__Healthy
+data\test\Banana__Healthy\rotated_by_45_Screen Shot 2018-06-12 at 9.52.21 PM.png,Banana__Healthy

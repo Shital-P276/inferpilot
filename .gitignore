@@ -1,0 +1,36 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Dataset -- large, and publicly available on Kaggle anyway (cite the source
+# in the report instead of committing 29k images)
+data/raw/
+data/train/
+data/val/
+data/test/
+
+# Model checkpoints -- large binaries, back these up separately (e.g. Google
+# Drive) rather than git. Losing these would be painful, so don't rely on
+# .gitignore alone -- keep a real backup copy somewhere.
+training/checkpoints/*.pt
+
+# MLflow local tracking store -- regenerable from training runs, and can grow
+# large with artifacts
+mlruns/
+mlflow.db
+
+# k6/load test raw result dumps -- can be large, regenerable by rerunning
+# load_test.js / load_test_combined.js
+monitoring/results/*.json
+
+# Router experiment artifacts that are large or easily regenerated
+# (keep router_best_model.pkl -- it's small and IS the deliverable)
+router/core_experiment_raw_results.csv
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+*.swp

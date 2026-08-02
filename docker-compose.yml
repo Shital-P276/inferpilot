@@ -1,0 +1,129 @@
+# Runs all 3 tier services together, each in its own container, sharing the
+# same image (built once, reused 3x with a different CMD each time), plus
+# a routing gateway that sits in front of them using the trained router model.
+# Prometheus scrapes /metrics from each service; Grafana visualizes it live.
+#
+# Usage (from project root):
+#   docker compose up --build
+#
+# Then hit:
+#   http://localhost:8001/docs        (fast)
+#   http://localhost:8002/docs        (balanced)
+#   http://localhost:8003/docs        (heavy)
+#   http://localhost:8000/docs        (gateway -- routes to whichever tier the router picks)
+#   http://localhost:9090             (Prometheus UI)
+#   http://localhost:3000             (Grafana, default login admin/admin)
+
+services:
+  fast:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: inferpilot-serving:latest
+    command: uvicorn serving.fast_service:app --host 0.0.0.0 --port 8001
+    ports:
+      - "8001:8001"
+    restart: unless-stopped
+    networks:
+      - inferpilot-net
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  balanced:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: inferpilot-serving:latest
+    command: uvicorn serving.balanced_service:app --host 0.0.0.0 --port 8002
+    ports:
+      - "8002:8002"
+    restart: unless-stopped
+    networks:
+      - inferpilot-net
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  heavy:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: inferpilot-serving:latest
+    command: uvicorn serving.heavy_service:app --host 0.0.0.0 --port 8003
+    ports:
+      - "8003:8003"
+    restart: unless-stopped
+    networks:
+      - inferpilot-net
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: inferpilot-serving:latest
+    command: uvicorn serving.gateway_service:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    networks:
+      - inferpilot-net
+    depends_on:
+      - fast
+      - balanced
+      - heavy
+
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    ports:
+      - "9090:9090"
+    restart: unless-stopped
+    networks:
+      - inferpilot-net
+    depends_on:
+      - fast
+      - balanced
+      - heavy
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+    restart: unless-stopped
+    networks:
+      - inferpilot-net
+    depends_on:
+      - prometheus
+
+networks:
+  inferpilot-net:
+    driver: bridge
+
+volumes:
+  prometheus-data:
+  grafana-data:

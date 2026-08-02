@@ -1,0 +1,10 @@
+model_name,accuracy,balanced_accuracy,fast_f1,balanced_f1,heavy_f1
+Balanced Random Forest,0.7317,0.5588,0.8562,0.3929,0.1869
+Logistic Regression,0.745,0.5518,0.866,0.3867,0.2
+Logistic Regression + SMOTE,0.7333,0.5473,0.8574,0.358,0.2095
+Gradient Boosting + SMOTE,0.7817,0.5419,0.888,0.3916,0.2143
+Random Forest + SMOTE,0.77,0.513,0.8825,0.3649,0.1707
+Confidence Threshold (rule-based),0.795,0.5037,0.9047,0.2301,0.2889
+Random Forest,0.7833,0.479,0.8918,0.3597,0.1111
+Gradient Boosting,0.7967,0.472,0.8977,0.3415,0.1429
+LightGBM,0.82,0.4447,0.9138,0.2963,0.1356

@@ -1,0 +1,22 @@
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s
+
+scrape_configs:
+  - job_name: 'fast-service'
+    static_configs:
+      - targets: ['fast:8001']
+        labels:
+          tier: 'fast'
+
+  - job_name: 'balanced-service'
+    static_configs:
+      - targets: ['balanced:8002']
+        labels:
+          tier: 'balanced'
+
+  - job_name: 'heavy-service'
+    static_configs:
+      - targets: ['heavy:8003']
+        labels:
+          tier: 'heavy'
