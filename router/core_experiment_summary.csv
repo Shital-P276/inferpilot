@@ -1,6 +1,6 @@
-strategy,n_requests,accuracy,avg_gateway_latency_ms,p95_gateway_latency_ms,avg_wall_latency_ms,avg_feature_extraction_ms,avg_fast_call_ms,avg_router_predict_ms,avg_rule_decision_ms,avg_escalated_call_ms,tier_distribution
-ml_router,244,0.9836,142.64,383.34,151.33,12.365,54.843,55.878,,19.45,"balanced:18%, fast:77%, heavy:5%"
-always_fast,250,0.892,60.02,171.19,69.4,12.606,47.313,,,0.0,fast:100%
-always_heavy,250,0.988,68.56,183.37,79.1,12.521,,,,55.939,heavy:100%
-round_robin,250,0.948,68.97,174.75,78.59,12.036,,,,56.839,"balanced:33%, fast:34%, heavy:33%"
-rule_based,250,0.98,77.2,231.67,84.74,12.063,49.161,,0.0,15.879,"fast:77%, heavy:23%"
+strategy,n_requests,accuracy,avg_latency_ms,p95_latency_ms,pct_fast,pct_balanced,pct_heavy
+always_fast,250,0.892,51.81,103.67,100.0,0.0,0.0
+always_heavy,250,0.988,56.93,96.27,0.0,0.0,100.0
+round_robin,250,0.948,58.48,112.9,33.6,33.2,33.2
+rule_based,250,0.976,65.49,139.44,78.8,10.0,11.2
+ml_router,250,0.984,142.08,339.16,76.0,19.6,4.4
