@@ -1,0 +1,6 @@
+strategy,accuracy,avg_latency_ms,resource_cost_mb,latency_norm,resource_norm,utility
+always_fast,0.892,53.29,22.47,0.5345,0.6455,0.3242
+round_robin,0.964,55.57,29.83,0.5574,0.8569,0.3168
+rule_based,0.976,65.79,24.82,0.6599,0.7131,0.3002
+always_heavy,0.988,56.14,34.81,0.5631,1.0,0.2938
+ml_router,0.984,99.7,24.92,1.0,0.7158,0.0693
