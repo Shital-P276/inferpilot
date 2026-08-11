@@ -1,6 +1,7 @@
 """
-Core experiment: compares all 5 routing strategies (Always Fast, Always Heavy,
-Round Robin, Rule-Based, ML Router) on ACCURACY using the held-out image set.
+Core experiment: compares all 6 routing strategies (Always Fast, Always Heavy,
+Round Robin, Rule-Based, ML Router, Single-Shot Router) on ACCURACY using the
+held-out image set.
 
 Sends each held-out image through /route?strategy=X for every strategy,
 records routed_tier, predicted_class vs true_label, and gateway_latency_ms.
@@ -25,7 +26,7 @@ RESULTS_PATH = BASE_DIR / "router" / "core_experiment_raw_results.csv"
 SUMMARY_PATH = BASE_DIR / "router" / "core_experiment_summary.csv"
 
 GATEWAY_URL = "http://localhost:8000/route"
-STRATEGIES = ["always_fast", "always_heavy", "round_robin", "rule_based", "ml_router"]
+STRATEGIES = ["always_fast", "always_heavy", "round_robin", "rule_based", "ml_router", "single_shot_router"]
 
 TIMEOUT_S = 15.0
 

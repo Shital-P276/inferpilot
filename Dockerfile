@@ -53,6 +53,7 @@ COPY training/models/ ./training/models/
 COPY training/checkpoints/ ./training/checkpoints/
 COPY training/__init__.py ./training/__init__.py
 COPY router/router_best_model.pkl ./router/router_best_model.pkl
+COPY router/router_singleshot_model.pkl ./router/router_singleshot_model.pkl
 
 # Actual startup command is overridden per-service in docker-compose.yml
 EXPOSE 8000 8001 8002 8003

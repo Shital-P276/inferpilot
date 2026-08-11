@@ -4,8 +4,14 @@ gateway_service.py
 The live routing gateway. Sits in front of fast/balanced/heavy services.
 
 Supports a `strategy` query param on /route:
-    - "ml_router" (default) -- original behavior, unchanged
-    - "always_fast" -- NEW, skips the router, always forwards to Fast
+    - "ml_router" -- cascade router (calls Fast first for fast_confidence, then decides)
+    - "always_fast" -- skips the router, always forwards to Fast
+    - "always_heavy" -- skips the router, always forwards to Heavy
+    - "round_robin" -- cycles fast -> balanced -> heavy
+    - "rule_based" -- hand-written confidence thresholds on Fast's output
+    - "single_shot_router" -- NEW: true single-shot, no Fast pre-call at all.
+      Predicts the tier directly from hand-crafted request features
+      (no fast_confidence), then makes exactly ONE network call.
 
 USAGE:
     uvicorn gateway_service:app --host 0.0.0.0 --port 8000
@@ -28,6 +34,7 @@ from prometheus_client import Counter, Histogram
 
 # ---- CONFIG -----------------------------------------------------------
 ROUTER_MODEL_PATH = "router/router_best_model.pkl"
+SINGLESHOT_MODEL_PATH = "router/router_singleshot_model.pkl"
 
 SERVICE_URLS = {
     "fast": "http://fast:8001",
@@ -83,7 +90,7 @@ def estimate_load_stage():
     return "burst"
 
 # Rule-based thresholds (from train_router.py's confidence-threshold baseline,
-# tuned on train set, seed=42, reproducible — see handoff docs)
+# tuned on train set, seed=42, reproducible -- see handoff docs)
 RULE_LOW_THRESH = 0.50
 RULE_HIGH_THRESH = 0.66
 
@@ -96,7 +103,7 @@ def rule_based_tier(fast_confidence: float) -> str:
     else:
         return "heavy"
 
-# ---- Load the trained router once at startup ----
+# ---- Load the trained CASCADE router once at startup ----
 with open(ROUTER_MODEL_PATH, "rb") as f:
     router_bundle = pickle.load(f)
 
@@ -108,6 +115,23 @@ if "load_stage" not in feature_cols:
     print(f"[gateway] WARNING: expected a raw 'load_stage' column in feature_cols, got {feature_cols}")
 if "fast_confidence" not in feature_cols:
     print(f"[gateway] WARNING: expected 'fast_confidence' in feature_cols, got {feature_cols}")
+
+# ---- Load the trained SINGLE-SHOT router once at startup (separate model) ----
+with open(SINGLESHOT_MODEL_PATH, "rb") as f:
+    singleshot_bundle = pickle.load(f)
+
+singleshot_model = singleshot_bundle["model"]
+singleshot_label_encoder = singleshot_bundle["label_encoder"]
+singleshot_feature_cols = singleshot_bundle["feature_cols"]
+
+if "fast_confidence" in singleshot_feature_cols:
+    print(f"[gateway] WARNING: single-shot model expects NO fast_confidence, but "
+          f"feature_cols={singleshot_feature_cols} includes it. This defeats the point "
+          f"of the single-shot strategy (would require a Fast pre-call). Check "
+          f"train_router_singleshot.py's FEATURE_COLS_NUMERIC.")
+if "load_stage" not in singleshot_feature_cols:
+    print(f"[gateway] WARNING: expected a raw 'load_stage' column in singleshot_feature_cols, "
+          f"got {singleshot_feature_cols}")
 
 
 def extract_request_features(image_bytes: bytes, file_size_kb: float):
@@ -130,6 +154,7 @@ def extract_request_features(image_bytes: bytes, file_size_kb: float):
 
 
 def build_feature_row(request_features: dict, fast_confidence: float, load_stage: str):
+    """For the CASCADE router (uses fast_confidence)."""
     row = {}
     for key in ["width", "height", "file_size_kb", "blur_score", "brightness", "edge_density"]:
         if key in feature_cols:
@@ -139,6 +164,17 @@ def build_feature_row(request_features: dict, fast_confidence: float, load_stage
     if "load_stage" in feature_cols:
         row["load_stage"] = load_stage
     return pd.DataFrame([row], columns=feature_cols)
+
+
+def build_singleshot_feature_row(request_features: dict, load_stage: str):
+    """For the SINGLE-SHOT router (no fast_confidence, ever)."""
+    row = {}
+    for key in ["width", "height", "file_size_kb", "blur_score", "brightness", "edge_density"]:
+        if key in singleshot_feature_cols:
+            row[key] = request_features[key]
+    if "load_stage" in singleshot_feature_cols:
+        row["load_stage"] = load_stage
+    return pd.DataFrame([row], columns=singleshot_feature_cols)
 
 
 async def call_tier(tier: str, file: UploadFile, image_bytes: bytes):
@@ -161,7 +197,10 @@ def health():
 @app.post("/route")
 async def route(
     file: UploadFile = File(...),
-    strategy: str = Query("ml_router", description="ml_router | always_fast | always_heavy | round_robin | rule_based"),
+    strategy: str = Query(
+        "ml_router",
+        description="ml_router | always_fast | always_heavy | round_robin | rule_based | single_shot_router",
+    ),
 ):
     start = time.perf_counter()
     _bump_concurrency(1)
@@ -242,7 +281,7 @@ async def route(
                 "gateway_latency_ms": round(elapsed_ms, 2),
             }
 
-        # ---- ml_router: original, unchanged behavior ----
+        # ---- ml_router: cascade -- calls Fast first for fast_confidence ----
         elif strategy == "ml_router":
             request_features = extract_request_features(image_bytes, file_size_kb)
             load_stage = estimate_load_stage()
@@ -269,6 +308,32 @@ async def route(
                 "routed_tier": chosen_tier,
                 "strategy": strategy,
                 "fast_confidence_used_for_routing": fast_confidence,
+                "estimated_load_stage": load_stage,
+                "gateway_latency_ms": round(elapsed_ms, 2),
+            }
+
+        # ---- single_shot_router: TRUE single-shot, NO Fast pre-call ----
+        elif strategy == "single_shot_router":
+            request_features = extract_request_features(image_bytes, file_size_kb)
+            load_stage = estimate_load_stage()
+
+            feature_row = build_singleshot_feature_row(request_features, load_stage)
+            predicted_label = singleshot_model.predict(feature_row)[0]
+            chosen_tier = singleshot_label_encoder.inverse_transform([predicted_label])[0]
+
+            ROUTING_DECISIONS.labels(tier=chosen_tier, strategy=strategy).inc()
+
+            # Exactly ONE network call -- no Fast pre-call under any circumstance,
+            # even if chosen_tier happens to be "fast". This is the entire point.
+            final_result = await call_tier(chosen_tier, file, image_bytes)
+
+            elapsed_ms = (time.perf_counter() - start) * 1000
+            GATEWAY_LATENCY.labels(strategy=strategy).observe(elapsed_ms)
+
+            return {
+                **final_result,
+                "routed_tier": chosen_tier,
+                "strategy": strategy,
                 "estimated_load_stage": load_stage,
                 "gateway_latency_ms": round(elapsed_ms, 2),
             }
