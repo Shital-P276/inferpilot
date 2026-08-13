@@ -39,53 +39,13 @@ from training.models.fast_cnn import FastCNN
 # ---- CONFIG -----------------------------------------------------------
 ROUTER_MODEL_PATH = "router/router_best_model.pkl"
 
-# Balanced and Heavy remain separate microservices, reached over HTTP --
-# only Fast moved in-process (see FAST_CHECKPOINT_PATH below), since it's
-# small (397K params) and was the dominant fixed cost in every cascade
-# strategy (ml_router, rule_based): ~40-50ms of pure network round-trip
-# for a model that takes under 1ms to actually run.
+# All tiers, including Fast, are served as separate microservices and reached
+# over HTTP so the gateway does not do local CPU inference for the model path.
 SERVICE_URLS = {
+    "fast": "http://fast:8001",
     "balanced": "http://balanced:8002",
     "heavy": "http://heavy:8003",
 }
-
-# ---- Fast model, in-process (no HTTP hop) ----
-FAST_CHECKPOINT_PATH = "training/checkpoints/fast_cnn_best.pt"
-FAST_NUM_CLASSES = 28
-# NOTE: the gateway container has no GPU passthrough (confirmed via startup
-# logs: "WARNING: The NVIDIA Driver was not detected"), so this runs on CPU.
-# Fast is tiny enough (397K params) that CPU inference should still be well
-# under the ~40-50ms HTTP round-trip it replaces -- but if this assumption
-# turns out wrong once measured, that's worth flagging, not assuming.
-FAST_DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-# Must exactly match the order used during training (same list as
-# fast_service.py's CLASS_NAMES) -- verify against training's class_to_idx
-# if predictions ever look mislabeled.
-FAST_CLASS_NAMES = [
-    "Apple_Healthy", "Apple_Rotten",
-    "Banana_Healthy", "Banana_Rotten",
-    "Bellpepper_Healthy", "Bellpepper_Rotten",
-    "Carrot_Healthy", "Carrot_Rotten",
-    "Cucumber_Healthy", "Cucumber_Rotten",
-    "Grape_Healthy", "Grape_Rotten",
-    "Guava_Healthy", "Guava_Rotten",
-    "Jujube_Healthy", "Jujube_Rotten",
-    "Mango_Healthy", "Mango_Rotten",
-    "Orange_Healthy", "Orange_Rotten",
-    "Pomegranate_Healthy", "Pomegranate_Rotten",
-    "Potato_Healthy", "Potato_Rotten",
-    "Strawberry_Healthy", "Strawberry_Rotten",
-    "Tomato_Healthy", "Tomato_Rotten",
-]
-
-_fast_preprocess = transforms.Compose([
-    transforms.Resize((224, 224)),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-])
-
-_fast_model = None  # loaded once at startup below
 
 # Concurrency thresholds used to estimate current load stage.
 # These are a practical proxy for the light/heavy/burst labels used during
@@ -104,7 +64,7 @@ LOAD_STAGE_THRESHOLDS = {
 # "load_stage" as one plain column, not pre-split dummy columns.
 # -------------------------------------------------------------------------
 
-VALID_STRATEGIES = {"ml_router", "always_fast", "always_heavy", "round_robin", "rule_based"}
+VALID_STRATEGIES = {"ml_router", "always_fast", "always_heavy", "round_robin", "rule_based", "single_shot_router"}
 
 # Rule-based baseline: hand-written threshold on Fast's confidence.
 # This is the "what a human would hand-code without ML" comparison point --
@@ -131,62 +91,48 @@ ROUTING_DECISIONS = Counter(
     "routing_decisions_total", "Count of routing decisions by chosen tier and strategy", ["tier", "strategy"]
 )
 GATEWAY_LATENCY = Histogram(
-    "gateway_latency_ms", "End-to-end gateway latency in ms"
+    "gateway_latency_ms",
+    "End-to-end gateway latency in ms",
+    ["strategy"],
+    buckets=[10, 25, 50, 75, 100, 150, 200, 300, 500, 750, 1000, 1500, 2000, 3000, 5000],
 )
 
 
-@app.on_event("startup")
-def load_fast_model_on_startup():
-    """Load Fast once at startup, not per-request -- same pattern as the
-    standalone fast_service.py, just living inside the gateway process now
-    instead of behind an HTTP call."""
-    global _fast_model
+# The gateway intentionally does not run the Fast model locally; it calls the
+# deployed Fast service over HTTP so the performance comparison reflects the
+# actual production architecture used for routing.
 
-    if not Path(FAST_CHECKPOINT_PATH).exists():
-        raise RuntimeError(f"Fast checkpoint not found at {FAST_CHECKPOINT_PATH}")
-    if len(FAST_CLASS_NAMES) != FAST_NUM_CLASSES:
-        raise RuntimeError(
-            f"FAST_CLASS_NAMES has {len(FAST_CLASS_NAMES)} entries but "
-            f"FAST_NUM_CLASSES={FAST_NUM_CLASSES}. Fix the mismatch."
+# ---- Load the trained SINGLE-SHOT router once at startup (optional, if present) ----
+SINGLESHOT_MODEL_PATH = "router/router_singleshot_model.pkl"
+
+try:
+    with open(SINGLESHOT_MODEL_PATH, "rb") as f:
+        singleshot_bundle = pickle.load(f)
+    singleshot_model = singleshot_bundle["model"]
+    singleshot_label_encoder = singleshot_bundle["label_encoder"]
+    singleshot_feature_cols = singleshot_bundle["feature_cols"]
+except FileNotFoundError:
+    singleshot_model = None
+    singleshot_label_encoder = None
+    singleshot_feature_cols = []
+
+if singleshot_model is not None:
+    if "fast_confidence" in singleshot_feature_cols:
+        print(f"[gateway] WARNING: single-shot router includes fast_confidence; that defeats the purpose of a true single-shot path.")
+    if "load_stage" not in singleshot_feature_cols:
+        print(f"[gateway] WARNING: expected 'load_stage' in singleshot_feature_cols, got {singleshot_feature_cols}")
+
+
+async def call_tier(tier: str, file: UploadFile, image_bytes: bytes):
+    async with httpx.AsyncClient() as client:
+        resp = await client.post(
+            f"{SERVICE_URLS[tier]}/predict",
+            files={"file": (file.filename, image_bytes, file.content_type)},
+            timeout=10.0,
         )
-
-    model = FastCNN(num_classes=FAST_NUM_CLASSES)
-    checkpoint = torch.load(FAST_CHECKPOINT_PATH, map_location=FAST_DEVICE)
-    state_dict = checkpoint.get("model_state_dict", checkpoint) if isinstance(checkpoint, dict) else checkpoint
-    model.load_state_dict(state_dict)
-    model.to(FAST_DEVICE)
-    model.eval()
-
-    _fast_model = model
-    print(f"[gateway] Fast model loaded in-process on {FAST_DEVICE}")
-
-
-def run_fast_inference(image_bytes: bytes) -> dict:
-    """In-process Fast inference -- replaces the HTTP call to the standalone
-    fast service. Returns the same shape the old HTTP response had, so
-    downstream code (build_feature_row, response assembly) doesn't need to
-    change: {"tier", "predicted_class", "confidence", "latency_ms"}."""
-    if _fast_model is None:
-        raise HTTPException(status_code=503, detail="Fast model not loaded yet")
-
-    image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
-    input_tensor = _fast_preprocess(image).unsqueeze(0).to(FAST_DEVICE)
-
-    start = time.perf_counter()
-    with torch.no_grad():
-        logits = _fast_model(input_tensor)
-        probs = torch.softmax(logits, dim=1)
-        confidence, predicted_idx = torch.max(probs, dim=1)
-    if FAST_DEVICE.type == "cuda":
-        torch.cuda.synchronize()
-    latency_ms = (time.perf_counter() - start) * 1000
-
-    return {
-        "tier": "fast",
-        "predicted_class": FAST_CLASS_NAMES[predicted_idx.item()],
-        "confidence": round(confidence.item(), 4),
-        "latency_ms": round(latency_ms, 3),
-    }
+    if resp.status_code != 200:
+        raise HTTPException(status_code=502, detail=f"{tier} tier unavailable")
+    return resp.json()
 
 # Track in-flight requests for a crude live load estimate
 _concurrent_lock = threading.Lock()
@@ -279,6 +225,17 @@ def build_feature_row(request_features: dict, fast_confidence: float, load_stage
     return pd.DataFrame([row], columns=feature_cols)
 
 
+def build_singleshot_feature_row(request_features: dict, load_stage: str):
+    """Builds the feature row for the single-shot tier selector."""
+    row = {}
+    for key in ["width", "height", "file_size_kb", "blur_score", "brightness", "edge_density"]:
+        if key in singleshot_feature_cols:
+            row[key] = request_features[key]
+    if "load_stage" in singleshot_feature_cols:
+        row["load_stage"] = load_stage
+    return pd.DataFrame([row], columns=singleshot_feature_cols)
+
+
 @app.get("/health")
 def health():
     return {"status": "ok", "concurrent_requests": _concurrent_requests}
@@ -321,7 +278,7 @@ async def route(file: UploadFile = File(...), strategy: str = "ml_router"):
 
         if strategy in NEEDS_FAST_CONFIDENCE or strategy == "always_fast":
             t0 = time.perf_counter()
-            fast_result = run_fast_inference(image_bytes)
+            fast_result = await call_tier("fast", file, image_bytes)
             timings_ms["fast_call_ms"] = round((time.perf_counter() - t0) * 1000, 3)
             fast_confidence = fast_result["confidence"]
 
@@ -352,6 +309,15 @@ async def route(file: UploadFile = File(...), strategy: str = "ml_router"):
             else:
                 chosen_tier = "fast"
             timings_ms["rule_decision_ms"] = round((time.perf_counter() - t0) * 1000, 3)
+
+        elif strategy == "single_shot_router":
+            if singleshot_model is None:
+                raise HTTPException(status_code=400, detail="single_shot_router model not available")
+            t0 = time.perf_counter()
+            feature_row = build_singleshot_feature_row(request_features, load_stage)
+            predicted_label = singleshot_model.predict(feature_row)[0]
+            chosen_tier = singleshot_label_encoder.inverse_transform([predicted_label])[0]
+            timings_ms["router_predict_ms"] = round((time.perf_counter() - t0) * 1000, 3)
         # ---------------------------------------------------------------------
 
         ROUTING_DECISIONS.labels(tier=chosen_tier, strategy=strategy).inc()
@@ -360,11 +326,10 @@ async def route(file: UploadFile = File(...), strategy: str = "ml_router"):
             final_result = fast_result
             timings_ms["escalated_call_ms"] = 0.0
         elif chosen_tier == "fast":
-            # round_robin landed on "fast" without pre-fetching it (round_robin
-            # never runs Fast up front, unlike ml_router/rule_based) -- run it
-            # now, in-process, same as everywhere else.
+            # Fast is always called through the service endpoint rather than running
+            # the model in the gateway process, so all strategies use the same API path.
             t0 = time.perf_counter()
-            final_result = run_fast_inference(image_bytes)
+            final_result = await call_tier("fast", file, image_bytes)
             timings_ms["escalated_call_ms"] = round((time.perf_counter() - t0) * 1000, 3)
         else:
             # balanced or heavy -- these remain separate microservices over HTTP.
@@ -381,7 +346,7 @@ async def route(file: UploadFile = File(...), strategy: str = "ml_router"):
             final_result = final_resp.json()
 
         elapsed_ms = (time.perf_counter() - start) * 1000
-        GATEWAY_LATENCY.observe(elapsed_ms)
+        GATEWAY_LATENCY.labels(strategy=strategy).observe(elapsed_ms)
 
         return {
             **final_result,

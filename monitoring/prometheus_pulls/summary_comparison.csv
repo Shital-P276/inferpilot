@@ -1,7 +1,7 @@
 strategy,gateway_latency_p50_ms,gateway_latency_p95_ms,gateway_latency_p99_ms,pct_gateway
-ml_router,10.0,10.0,10.0,100.0
-always_fast,,,,
-always_heavy,,,,
-round_robin,,,,
-rule_based,,,,
-single_shot_router,10.0,10.0,10.0,100.0
+ml_router,nan,nan,nan,100.0
+always_fast,nan,nan,nan,100.0
+always_heavy,939.18,2452.31,2934.91,100.0
+round_robin,868.32,2497.92,2921.81,100.0
+rule_based,838.55,2790.22,4483.11,100.0
+single_shot_router,,,,

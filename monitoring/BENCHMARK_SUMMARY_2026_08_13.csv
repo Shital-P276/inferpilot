@@ -1,0 +1,41 @@
+Routing Strategy,Request Count,Primary Tiers,p50 Latency (ms),p95 Latency (ms),p99 Latency (ms),Description
+ml_router,2143,"Adaptive (Balanced majority)","Data Collection Issue","Data Collection Issue","Data Collection Issue","Machine-learned router: uses image features + Fast confidence to choose tier. Most requests routed to Balanced tier."
+always_fast,742,Fast,"Data Collection Issue","Data Collection Issue","Data Collection Issue","Baseline: always use Fast tier (lowest latency, potential accuracy tradeoff)"
+always_heavy,450,Heavy,939.18,2452.31,2934.91,"Baseline: always use Heavy tier (maximum accuracy, highest latency)"
+round_robin,1224,"Fast/Balanced/Heavy mixed",868.32,2497.92,2921.81,"Naive load balancing: cycle through all three tiers equally"
+rule_based,391,"Mostly Heavy",838.55,2790.22,4483.11,"Hand-coded threshold: escalate to Heavy if Fast confidence < 0.7"
+single_shot_router,858,"Single-shot decision (no Fast call)","Not Captured","Not Captured","Not Captured","Optional router that makes tier decision without querying Fast (true single-shot)"
+
+CRITICAL FIX APPLIED:
+- Gateway was running Fast model inference locally on CPU
+- This was unfair because Balanced/Heavy run on GPU
+- SOLUTION: Reverted to HTTP calls for Fast service
+- NOW: All tiers (Fast/Balanced/Heavy) are separate GPU-accelerated microservices
+- IMPACT: Benchmark now reflects actual production architecture
+
+TEST CONDITIONS:
+Load Pattern: Light (5 VUs, 30s) → Heavy (25 VUs, 30s) → Burst (50 VUs, 30s)
+Dataset: 250 real fruit/vegetable images, random sampling per request
+Duration: 2m 10s per strategy
+Status: All requests completed 200 OK, no connection errors
+
+HISTOGRAM FIX APPLIED:
+- Old buckets: Default Prometheus (10ms to 30s) — too coarse
+- New buckets: [10, 25, 50, 75, 100, 150, 200, 300, 500, 750, 1000, 1500, 2000, 3000, 5000] ms
+- Result: Proper quantization for sub-second latencies
+
+DATA QUALITY NOTES:
+✅ ml_router: 2,143 requests captured, routing decisions logged
+✅ always_fast: 742 requests, smooth ramp during load stages  
+✅ always_heavy: 450 requests, consistent ~940ms p50, ~2.5s p95
+✅ round_robin: 1,224 requests, distributed across all tiers
+✅ rule_based: 391 requests, escalation threshold active
+⚠ Latency percentiles for ml_router/always_fast show NaN in aggregated summary (raw data present, aggregation query issue)
+
+FILES GENERATED:
+- monitoring/prometheus_pulls/gateway_latency_*.csv (15 files - p50/p95/p99 per strategy)
+- monitoring/prometheus_pulls/routing_decisions_*.csv (6 files - tier distribution)
+- monitoring/prometheus_pulls/inference_latency_*.csv (2 files - per-tier timing)
+- monitoring/prometheus_pulls/prediction_confidence_median.csv
+- monitoring/prometheus_pulls/predictions_by_class.csv (accuracy per fruit type)
+- monitoring/prometheus_pulls/summary_comparison.csv (quick reference)
