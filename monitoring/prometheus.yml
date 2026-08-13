@@ -20,3 +20,9 @@ scrape_configs:
       - targets: ['heavy:8003']
         labels:
           tier: 'heavy'
+
+  - job_name: 'gateway-service'
+    static_configs:
+      - targets: ['gateway:8000']
+        labels:
+          tier: 'gateway'

@@ -1,0 +1,3 @@
+timestamp,count,__name__,exported_tier,instance,job,strategy,tier
+1786623770.204,2,routing_decisions_total,balanced,gateway:8000,gateway-service,single_shot_router,gateway
+1786623775.204,7,routing_decisions_total,balanced,gateway:8000,gateway-service,single_shot_router,gateway
