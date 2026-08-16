@@ -29,12 +29,14 @@ import pandas as pd
 import httpx
 import torch
 from torchvision import transforms
+from torchvision.transforms import v2
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from PIL import Image
 from prometheus_fastapi_instrumentator import Instrumentator
 from prometheus_client import Counter, Histogram
 
 from training.models.fast_cnn import FastCNN
+from training.models.correctness_gate import CorrectnessGateNet
 
 # ---- CONFIG -----------------------------------------------------------
 ROUTER_MODEL_PATH = "router/router_best_model.pkl"
@@ -46,6 +48,15 @@ ROUTER_MODEL_PATH = "router/router_best_model.pkl"
 # 1 categorical as the cascade router, minus fast_confidence.
 SINGLESHOT_ROUTER_MODEL_PATH = "router/router_singleshot_model.pkl"
 
+# CorrectnessGateNet single-shot routing strategy: one CNN forward pass on the
+# RAW IMAGE (no Fast pre-call, no hand-engineered feature row), predicts
+# P(correct) per tier. Costs/lambda match the training lambda sweep
+# (train_correctness_gate.py) so gateway decisions are production-consistent.
+CORRECTNESS_GATE_CHECKPOINT_PATH = "training/checkpoints/correctness_gate_best.pt"
+CORRECTNESS_GATE_LAMBDA = 0.20
+CORRECTNESS_GATE_COSTS = {"fast": 0.480, "balanced": 0.947, "heavy": 0.986}
+CORRECTNESS_GATE_TIERS = ["fast", "balanced", "heavy"]
+
 SERVICE_URLS = {
     "balanced": "http://balanced:8002",
     "heavy": "http://heavy:8003",
@@ -56,26 +67,36 @@ FAST_NUM_CLASSES = 28
 FAST_DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 FAST_CLASS_NAMES = [
-    "Apple_Healthy", "Apple_Rotten",
-    "Banana_Healthy", "Banana_Rotten",
-    "Bellpepper_Healthy", "Bellpepper_Rotten",
-    "Carrot_Healthy", "Carrot_Rotten",
-    "Cucumber_Healthy", "Cucumber_Rotten",
-    "Grape_Healthy", "Grape_Rotten",
-    "Guava_Healthy", "Guava_Rotten",
-    "Jujube_Healthy", "Jujube_Rotten",
-    "Mango_Healthy", "Mango_Rotten",
-    "Orange_Healthy", "Orange_Rotten",
-    "Pomegranate_Healthy", "Pomegranate_Rotten",
-    "Potato_Healthy", "Potato_Rotten",
-    "Strawberry_Healthy", "Strawberry_Rotten",
-    "Tomato_Healthy", "Tomato_Rotten",
+    "Apple__Healthy", "Apple__Rotten",
+    "Banana__Healthy", "Banana__Rotten",
+    "Bellpepper__Healthy", "Bellpepper__Rotten",
+    "Carrot__Healthy", "Carrot__Rotten",
+    "Cucumber__Healthy", "Cucumber__Rotten",
+    "Grape__Healthy", "Grape__Rotten",
+    "Guava__Healthy", "Guava__Rotten",
+    "Jujube__Healthy", "Jujube__Rotten",
+    "Mango__Healthy", "Mango__Rotten",
+    "Orange__Healthy", "Orange__Rotten",
+    "Pomegranate__Healthy", "Pomegranate__Rotten",
+    "Potato__Healthy", "Potato__Rotten",
+    "Strawberry__Healthy", "Strawberry__Rotten",
+    "Tomato__Healthy", "Tomato__Rotten",
 ]
 
 _fast_preprocess = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+])
+
+# Same eval-time pipeline as train_correctness_gate.py (ToImage -> Resize(256)
+# -> CenterCrop(224) -> ToDtype(scale) -> ImageNet Normalize).
+_correctness_gate_preprocess = v2.Compose([
+    v2.ToImage(),
+    v2.Resize(256),
+    v2.CenterCrop(224),
+    v2.ToDtype(torch.float32, scale=True),
+    v2.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
 ])
 
 _fast_model = None
@@ -86,7 +107,7 @@ LOAD_STAGE_THRESHOLDS = {
     "burst": (40, float("inf")),
 }
 
-VALID_STRATEGIES = {"ml_router", "always_fast", "always_heavy", "round_robin", "rule_based", "single_shot_router"}
+VALID_STRATEGIES = {"ml_router", "always_fast", "always_heavy", "round_robin", "rule_based", "single_shot_router", "correctness_gate_router"}
 
 RULE_BASED_CONFIDENCE_THRESHOLD = 0.7
 RULE_BASED_ESCALATE_TO = "heavy"
@@ -219,6 +240,21 @@ if "fast_confidence" in singleshot_feature_cols:
         f"Check whether you loaded the wrong pickle."
     )
 
+# ---- Load the CorrectnessGateNet single-shot router (torch CNN, NOT a sklearn
+# pickle). Predicts P(correct) per tier directly from raw image pixels -- same
+# no-Fast-pre-call shape as single_shot_router, but consumes the image itself
+# rather than a hand-engineered feature vector.
+if not Path(CORRECTNESS_GATE_CHECKPOINT_PATH).exists():
+    raise RuntimeError(f"CorrectnessGateNet checkpoint not found at {CORRECTNESS_GATE_CHECKPOINT_PATH}")
+
+_gate_checkpoint = torch.load(CORRECTNESS_GATE_CHECKPOINT_PATH, map_location=FAST_DEVICE)
+_gate_state_dict = _gate_checkpoint.get("model_state_dict", _gate_checkpoint) if isinstance(_gate_checkpoint, dict) else _gate_checkpoint
+correctness_gate_model = CorrectnessGateNet(num_tiers=3)
+correctness_gate_model.load_state_dict(_gate_state_dict)
+correctness_gate_model.to(FAST_DEVICE)
+correctness_gate_model.eval()
+print(f"[gateway] CorrectnessGateNet loaded in-process on {FAST_DEVICE}")
+
 
 def extract_request_features(image_bytes: bytes, file_size_kb: float):
     pil_img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
@@ -272,6 +308,30 @@ def build_singleshot_feature_row(request_features: dict, load_stage: str):
     return pd.DataFrame([row], columns=singleshot_feature_cols)
 
 
+def route_correctness_gate(image_bytes: bytes) -> str:
+    """CorrectnessGateNet single-shot routing decision from raw image pixels.
+
+    Preprocesses the image with the training eval pipeline, runs one CNN
+    forward pass to get P(correct) for each tier (ordered fast, balanced,
+    heavy), then picks argmax over tiers of (P_correct_tier - LAMBDA*cost_tier).
+    """
+    if correctness_gate_model is None:
+        raise HTTPException(status_code=503, detail="CorrectnessGateNet not loaded yet")
+
+    image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+    input_tensor = _correctness_gate_preprocess(image).unsqueeze(0).to(FAST_DEVICE)
+
+    with torch.no_grad():
+        tier_correctness = correctness_gate_model(input_tensor)[0]  # [3] -> (fast, balanced, heavy)
+
+    scores = [
+        tier_correctness[i].item() - CORRECTNESS_GATE_LAMBDA * CORRECTNESS_GATE_COSTS[tier]
+        for i, tier in enumerate(CORRECTNESS_GATE_TIERS)
+    ]
+    chosen_tier = CORRECTNESS_GATE_TIERS[int(max(range(len(scores)), key=scores.__getitem__))]
+    return chosen_tier
+
+
 @app.get("/health")
 def health():
     return {"status": "ok", "concurrent_requests": _concurrent_requests}
@@ -299,10 +359,11 @@ async def route(file: UploadFile = File(...), strategy: str = "ml_router"):
 
         load_stage = estimate_load_stage()
 
-        # single_shot_router deliberately excluded: it never needs Fast's
-        # confidence -- that's the whole architectural point (one hop, no
-        # cascade). Only ml_router/rule_based (cascade strategies) and
-        # always_fast (needs the actual Fast answer) trigger the Fast call.
+        # single_shot_router / correctness_gate_router deliberately excluded:
+        # neither ever needs Fast's confidence -- that's the whole architectural
+        # point (one hop, no cascade). Only ml_router/rule_based (cascade
+        # strategies) and always_fast (needs the actual Fast answer) trigger
+        # the Fast call.
         NEEDS_FAST_CONFIDENCE = {"ml_router", "rule_based"}
 
         fast_result = None
@@ -347,6 +408,14 @@ async def route(file: UploadFile = File(...), strategy: str = "ml_router"):
             feature_row = build_singleshot_feature_row(request_features, load_stage)
             predicted_label = singleshot_router_model.predict(feature_row)[0]
             chosen_tier = singleshot_label_encoder.inverse_transform([predicted_label])[0]
+            timings_ms["router_predict_ms"] = round((time.perf_counter() - t0) * 1000, 3)
+
+        elif strategy == "correctness_gate_router":
+            # Path B single-shot: one CNN forward pass on the raw image (no
+            # Fast pre-call, no hand-engineered feature row). Picks the tier
+            # maximizing (P_correct_tier - LAMBDA*cost_tier).
+            t0 = time.perf_counter()
+            chosen_tier = route_correctness_gate(image_bytes)
             timings_ms["router_predict_ms"] = round((time.perf_counter() - t0) * 1000, 3)
 
         ROUTING_DECISIONS.labels(tier=chosen_tier, strategy=strategy).inc()
