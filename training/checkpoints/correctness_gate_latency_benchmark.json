@@ -1,0 +1,30 @@
+[
+  {
+    "model": "correctness_gate",
+    "mode": "single_image",
+    "avg_latency_ms": 0.425,
+    "p50_latency_ms": 0.403,
+    "p95_latency_ms": 0.654,
+    "std_latency_ms": 0.093,
+    "cpu_memory_delta_mb": 0.0,
+    "gpu_model_footprint_mb": 0.1,
+    "gpu_peak_inference_mb": 354.29,
+    "checkpoint_size_mb": 0.1,
+    "num_params": 24003,
+    "device": "cuda"
+  },
+  {
+    "model": "correctness_gate",
+    "mode": "random_image",
+    "avg_latency_ms": 0.516,
+    "p50_latency_ms": 0.414,
+    "p95_latency_ms": 0.872,
+    "std_latency_ms": 0.18,
+    "cpu_memory_delta_mb": 0.0,
+    "gpu_model_footprint_mb": 0.1,
+    "gpu_peak_inference_mb": 354.29,
+    "checkpoint_size_mb": 0.1,
+    "num_params": 24003,
+    "device": "cuda"
+  }
+]

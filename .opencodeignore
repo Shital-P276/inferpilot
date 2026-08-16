@@ -1,0 +1,28 @@
+# Secrets & credentials (none exist yet, but block by default)
+.env
+.env.*
+*.pem
+*.key
+*secret*
+*credential*
+**/kubeconfig
+**/.kube/config
+**/.aws/
+**/.gcp/
+**/.azure/
+
+# Large/binary artifacts -- no reason for the model to read these
+venv/
+__pycache__/
+*.pyc
+inferpilot_checkpoints_backup.zip
+mlflow.db
+mlruns/
+data/raw/
+data/train/
+data/val/
+data/test/
+training/checkpoints/*.pt
+
+# Git internals
+.git/

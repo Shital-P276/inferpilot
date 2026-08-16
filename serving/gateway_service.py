@@ -39,29 +39,22 @@ from training.models.fast_cnn import FastCNN
 # ---- CONFIG -----------------------------------------------------------
 ROUTER_MODEL_PATH = "router/router_best_model.pkl"
 
-# Balanced and Heavy remain separate microservices, reached over HTTP --
-# only Fast moved in-process (see FAST_CHECKPOINT_PATH below), since it's
-# small (397K params) and was the dominant fixed cost in every cascade
-# strategy (ml_router, rule_based): ~40-50ms of pure network round-trip
-# for a model that takes under 1ms to actually run.
+# Single-shot Path A router: predicts tier directly from request features
+# ONLY (no fast_confidence, no Fast pre-call) -- see train_router_singleshot.py.
+# feature_cols confirmed from the pickle: ['width','height','file_size_kb',
+# 'blur_score','brightness','edge_density','load_stage'] -- same 6 numeric +
+# 1 categorical as the cascade router, minus fast_confidence.
+SINGLESHOT_ROUTER_MODEL_PATH = "router/router_singleshot_model.pkl"
+
 SERVICE_URLS = {
     "balanced": "http://balanced:8002",
     "heavy": "http://heavy:8003",
 }
 
-# ---- Fast model, in-process (no HTTP hop) ----
 FAST_CHECKPOINT_PATH = "training/checkpoints/fast_cnn_best.pt"
 FAST_NUM_CLASSES = 28
-# NOTE: the gateway container has no GPU passthrough (confirmed via startup
-# logs: "WARNING: The NVIDIA Driver was not detected"), so this runs on CPU.
-# Fast is tiny enough (397K params) that CPU inference should still be well
-# under the ~40-50ms HTTP round-trip it replaces -- but if this assumption
-# turns out wrong once measured, that's worth flagging, not assuming.
 FAST_DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# Must exactly match the order used during training (same list as
-# fast_service.py's CLASS_NAMES) -- verify against training's class_to_idx
-# if predictions ever look mislabeled.
 FAST_CLASS_NAMES = [
     "Apple_Healthy", "Apple_Rotten",
     "Banana_Healthy", "Banana_Rotten",
@@ -85,30 +78,16 @@ _fast_preprocess = transforms.Compose([
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
 ])
 
-_fast_model = None  # loaded once at startup below
+_fast_model = None
 
-# Concurrency thresholds used to estimate current load stage.
-# These are a practical proxy for the light/heavy/burst labels used during
-# training (k6 VUs) -- tune these numbers against your own k6 stage
-# definitions if the mapping feels off in practice.
 LOAD_STAGE_THRESHOLDS = {
     "light": (0, 10),
     "heavy": (10, 40),
     "burst": (40, float("inf")),
 }
 
-# NOTE: load_stage is passed as a single raw string column ("light"/
-# "heavy"/"burst") -- the trained pipeline has its own OneHotEncoder
-# (via ColumnTransformer) that handles the encoding internally. Confirmed
-# by inspecting feature_cols in router_best_model.pkl, which lists
-# "load_stage" as one plain column, not pre-split dummy columns.
-# -------------------------------------------------------------------------
+VALID_STRATEGIES = {"ml_router", "always_fast", "always_heavy", "round_robin", "rule_based", "single_shot_router"}
 
-VALID_STRATEGIES = {"ml_router", "always_fast", "always_heavy", "round_robin", "rule_based"}
-
-# Rule-based baseline: hand-written threshold on Fast's confidence.
-# This is the "what a human would hand-code without ML" comparison point --
-# deliberately simple, single threshold, no load-awareness.
 RULE_BASED_CONFIDENCE_THRESHOLD = 0.7
 RULE_BASED_ESCALATE_TO = "heavy"
 
@@ -131,15 +110,13 @@ ROUTING_DECISIONS = Counter(
     "routing_decisions_total", "Count of routing decisions by chosen tier and strategy", ["tier", "strategy"]
 )
 GATEWAY_LATENCY = Histogram(
-    "gateway_latency_ms", "End-to-end gateway latency in ms"
+    "gateway_latency_ms", "End-to-end gateway latency in ms", ["strategy"],
+    buckets=[10, 25, 50, 75, 100, 150, 200, 300, 500, 750, 1000, 1500, 2000, 3000, 5000]
 )
 
 
 @app.on_event("startup")
 def load_fast_model_on_startup():
-    """Load Fast once at startup, not per-request -- same pattern as the
-    standalone fast_service.py, just living inside the gateway process now
-    instead of behind an HTTP call."""
     global _fast_model
 
     if not Path(FAST_CHECKPOINT_PATH).exists():
@@ -162,10 +139,6 @@ def load_fast_model_on_startup():
 
 
 def run_fast_inference(image_bytes: bytes) -> dict:
-    """In-process Fast inference -- replaces the HTTP call to the standalone
-    fast service. Returns the same shape the old HTTP response had, so
-    downstream code (build_feature_row, response assembly) doesn't need to
-    change: {"tier", "predicted_class", "confidence", "latency_ms"}."""
     if _fast_model is None:
         raise HTTPException(status_code=503, detail="Fast model not loaded yet")
 
@@ -188,7 +161,6 @@ def run_fast_inference(image_bytes: bytes) -> dict:
         "latency_ms": round(latency_ms, 3),
     }
 
-# Track in-flight requests for a crude live load estimate
 _concurrent_lock = threading.Lock()
 _concurrent_requests = 0
 
@@ -208,7 +180,6 @@ def estimate_load_stage():
     return "burst"
 
 
-# ---- Load the trained router once at startup ----
 with open(ROUTER_MODEL_PATH, "rb") as f:
     router_bundle = pickle.load(f)
 
@@ -229,23 +200,35 @@ if "fast_confidence" not in feature_cols:
         f"got feature_cols={feature_cols}. Confirm the exact name used in training."
     )
 
+# ---- Load the single-shot Path A router (separate pickle, separate feature
+# set -- no fast_confidence). Confirmed via inspection of the actual pickle:
+# feature_cols = ['width','height','file_size_kb','blur_score','brightness',
+# 'edge_density','load_stage']; classes = ['balanced','fast','heavy'].
+with open(SINGLESHOT_ROUTER_MODEL_PATH, "rb") as f:
+    router_singleshot_bundle = pickle.load(f)
+
+singleshot_router_model = router_singleshot_bundle["model"]
+singleshot_label_encoder = router_singleshot_bundle["label_encoder"]
+singleshot_feature_cols = router_singleshot_bundle["feature_cols"]
+
+if "fast_confidence" in singleshot_feature_cols:
+    print(
+        f"[gateway] WARNING: single-shot router's feature_cols unexpectedly "
+        f"contains 'fast_confidence' -- that defeats the point of single-shot "
+        f"(no cascade, no Fast pre-call). got feature_cols={singleshot_feature_cols}. "
+        f"Check whether you loaded the wrong pickle."
+    )
+
 
 def extract_request_features(image_bytes: bytes, file_size_kb: float):
-    """Mirrors whatever feature extraction generate_utility_labels.py used.
-    Adjust if your training pipeline computed blur/brightness/edge_density
-    differently (e.g. different color space or kernel size)."""
     pil_img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
     width, height = pil_img.size
 
     cv_img = cv2.cvtColor(np.array(pil_img), cv2.COLOR_RGB2GRAY)
 
-    # Blur score: variance of Laplacian -- lower means blurrier
     blur_score = cv2.Laplacian(cv_img, cv2.CV_64F).var()
-
-    # Brightness: mean pixel intensity
     brightness = float(np.mean(cv_img))
 
-    # Edge density: fraction of pixels flagged as edges by Canny
     edges = cv2.Canny(cv_img, 100, 200)
     edge_density = float(np.sum(edges > 0)) / (width * height)
 
@@ -260,11 +243,6 @@ def extract_request_features(image_bytes: bytes, file_size_kb: float):
 
 
 def build_feature_row(request_features: dict, fast_confidence: float, load_stage: str):
-    """Builds a single-row DataFrame matching feature_cols exactly.
-    load_stage is passed as its raw string value -- the trained pipeline's
-    own ColumnTransformer + OneHotEncoder handles the encoding internally,
-    confirmed from the pickle's feature_cols (a single 'load_stage' column,
-    not pre-split dummies)."""
     row = {}
     for key in ["width", "height", "file_size_kb", "blur_score", "brightness", "edge_density"]:
         if key in feature_cols:
@@ -277,6 +255,21 @@ def build_feature_row(request_features: dict, fast_confidence: float, load_stage
         row["load_stage"] = load_stage
 
     return pd.DataFrame([row], columns=feature_cols)
+
+
+def build_singleshot_feature_row(request_features: dict, load_stage: str):
+    """Same shape as build_feature_row, but against singleshot_feature_cols
+    and with no fast_confidence input at all -- there's no Fast result to
+    draw it from, by design."""
+    row = {}
+    for key in ["width", "height", "file_size_kb", "blur_score", "brightness", "edge_density"]:
+        if key in singleshot_feature_cols:
+            row[key] = request_features[key]
+
+    if "load_stage" in singleshot_feature_cols:
+        row["load_stage"] = load_stage
+
+    return pd.DataFrame([row], columns=singleshot_feature_cols)
 
 
 @app.get("/health")
@@ -306,14 +299,10 @@ async def route(file: UploadFile = File(...), strategy: str = "ml_router"):
 
         load_stage = estimate_load_stage()
 
-        # Only run Fast when the strategy actually needs its output.
-        # ml_router needs fast_confidence as a router feature; rule_based needs
-        # it to evaluate the threshold. always_heavy/round_robin don't use it
-        # at all -- running it for them would inflate their latency with a
-        # lookup they'd never do in a real standalone deployment.
-        # NOTE: Fast now runs IN-PROCESS (see run_fast_inference above), not
-        # over HTTP -- this eliminates the ~40-50ms network round-trip that
-        # was previously the dominant cost here for a sub-millisecond model.
+        # single_shot_router deliberately excluded: it never needs Fast's
+        # confidence -- that's the whole architectural point (one hop, no
+        # cascade). Only ml_router/rule_based (cascade strategies) and
+        # always_fast (needs the actual Fast answer) trigger the Fast call.
         NEEDS_FAST_CONFIDENCE = {"ml_router", "rule_based"}
 
         fast_result = None
@@ -325,7 +314,6 @@ async def route(file: UploadFile = File(...), strategy: str = "ml_router"):
             timings_ms["fast_call_ms"] = round((time.perf_counter() - t0) * 1000, 3)
             fast_confidence = fast_result["confidence"]
 
-        # ---- Strategy-specific decision (this is the only part that differs) ----
         if strategy == "ml_router":
             t0 = time.perf_counter()
             feature_row = build_feature_row(request_features, fast_confidence, load_stage)
@@ -343,16 +331,23 @@ async def route(file: UploadFile = File(...), strategy: str = "ml_router"):
             chosen_tier = next_round_robin_tier()
 
         elif strategy == "rule_based":
-            # Hand-written threshold baseline: escalate only if Fast isn't
-            # confident enough. No load-awareness, no learned weighting --
-            # this is deliberately the simplest thing a human would hand-code.
             t0 = time.perf_counter()
             if fast_confidence < RULE_BASED_CONFIDENCE_THRESHOLD:
                 chosen_tier = RULE_BASED_ESCALATE_TO
             else:
                 chosen_tier = "fast"
             timings_ms["rule_decision_ms"] = round((time.perf_counter() - t0) * 1000, 3)
-        # ---------------------------------------------------------------------
+
+        elif strategy == "single_shot_router":
+            # Path A: predict tier directly from request features alone --
+            # no Fast pre-call, exactly one network hop downstream (to
+            # whichever tier gets picked). fast_result/fast_confidence stay
+            # None here, same as always_heavy/round_robin.
+            t0 = time.perf_counter()
+            feature_row = build_singleshot_feature_row(request_features, load_stage)
+            predicted_label = singleshot_router_model.predict(feature_row)[0]
+            chosen_tier = singleshot_label_encoder.inverse_transform([predicted_label])[0]
+            timings_ms["router_predict_ms"] = round((time.perf_counter() - t0) * 1000, 3)
 
         ROUTING_DECISIONS.labels(tier=chosen_tier, strategy=strategy).inc()
 
@@ -360,14 +355,10 @@ async def route(file: UploadFile = File(...), strategy: str = "ml_router"):
             final_result = fast_result
             timings_ms["escalated_call_ms"] = 0.0
         elif chosen_tier == "fast":
-            # round_robin landed on "fast" without pre-fetching it (round_robin
-            # never runs Fast up front, unlike ml_router/rule_based) -- run it
-            # now, in-process, same as everywhere else.
             t0 = time.perf_counter()
             final_result = run_fast_inference(image_bytes)
             timings_ms["escalated_call_ms"] = round((time.perf_counter() - t0) * 1000, 3)
         else:
-            # balanced or heavy -- these remain separate microservices over HTTP.
             t0 = time.perf_counter()
             async with httpx.AsyncClient() as client:
                 final_resp = await client.post(
@@ -381,7 +372,7 @@ async def route(file: UploadFile = File(...), strategy: str = "ml_router"):
             final_result = final_resp.json()
 
         elapsed_ms = (time.perf_counter() - start) * 1000
-        GATEWAY_LATENCY.observe(elapsed_ms)
+        GATEWAY_LATENCY.labels(strategy=strategy).observe(elapsed_ms)
 
         return {
             **final_result,

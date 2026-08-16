@@ -39,6 +39,8 @@ from imblearn.pipeline import Pipeline as ImbPipeline
 
 import lightgbm as lgb
 
+from router_eval_utils import run_router_diagnostic
+
 # ---------------- Config ----------------
 BASE_DIR = Path(__file__).resolve().parent
 LABELS_PATH = BASE_DIR / "utility_labels.csv"
@@ -305,5 +307,33 @@ def main():
     print(f"Feature importance plot saved to {IMPORTANCE_PLOT}")
 
 
+def run_baseline_diagnostic():
+    """Read-only diagnostic: load saved best-model pickle, reproduce the test
+    split, re-run inference on the test set only, and print the random-routing-
+    baseline comparison. No retraining."""
+    run_router_diagnostic(
+        name="Cascade router (Balanced Random Forest)",
+        model_pkl_path=BEST_MODEL_OUTPUT,
+        labels_path=LABELS_PATH,
+        target_col=TARGET_COL,
+        test_size=TEST_SIZE,
+        seed=SEED,
+    )
+
+
 if __name__ == "__main__":
-    main()
+    import argparse
+    parser = argparse.ArgumentParser(
+        description="Train the cascade router comparison, or run the random-routing-baseline "
+                    "diagnostic on the saved model without retraining."
+    )
+    parser.add_argument(
+        "--baseline-diagnostic", action="store_true",
+        help="Skip training: load router_best_model.pkl, re-run inference on the test set only, "
+             "and print the random-routing-baseline comparison."
+    )
+    args = parser.parse_args()
+    if args.baseline_diagnostic:
+        run_baseline_diagnostic()
+    else:
+        main()
