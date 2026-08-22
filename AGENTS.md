@@ -18,6 +18,10 @@ If `~/venv_inferpilot` doesn't exist yet, ask before creating one — don't crea
 - `requirements_wsl.txt` (generated from `requirements.txt` with `pywin32` removed, which is Windows-only and doesn't install on Linux) is the correct requirements file to use inside `~/venv_inferpilot`. Don't use `requirements.txt` directly here.
 - `requirements_docker.txt` is for the Docker build specifically (different torch/CUDA version, intentional) — not related to either venv above.
 
+## Scope boundary
+
+Stay inside the project folder (`/mnt/d/Projects/inferpilot`) and the designated venv (`~/venv_inferpilot`). Do not read, execute, or reference anything outside these — including files or binaries on `C:` (e.g. `/mnt/c/...`), other project folders, or other parts of the D: drive — even to work around a missing command or tool. If something needed (like `docker`) isn't available inside this environment, stop and tell the user what's missing and why, rather than searching elsewhere on the system to find an alternate path to it. Ask first.
+
 ## Paths
 
 - Path values read from `router/utility_labels.csv` (and similar files) use Windows-style backslashes (`data\test\...`). On Linux these must be normalized to forward slashes before use (e.g. `.replace("\\", "/")`) or file loading will silently fail. This fix has been applied inside the shared `CorrectnessGateDataset` class — don't re-introduce backslash-path bugs in new code that reads this CSV.

@@ -80,6 +80,8 @@ services:
     command: uvicorn serving.gateway_service:app --host 0.0.0.0 --port 8000
     ports:
       - "8000:8000"
+    environment:
+      - SIMULATED_HEAVY_DELAY_MS=${SIMULATED_HEAVY_DELAY_MS:-2500}
     restart: unless-stopped
     networks:
       - inferpilot-net

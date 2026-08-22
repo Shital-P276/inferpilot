@@ -17,7 +17,9 @@ USAGE:
     uvicorn gateway_service:app --host 0.0.0.0 --port 8000
 """
 
+import asyncio
 import io
+import os
 import time
 import pickle
 import threading
@@ -36,7 +38,7 @@ from prometheus_fastapi_instrumentator import Instrumentator
 from prometheus_client import Counter, Histogram
 
 from training.models.fast_cnn import FastCNN
-from training.models.correctness_gate import CorrectnessGateNet
+from training.models.correctness_gate import CorrectnessGateNet, CorrectnessGateNetV2b
 
 # ---- CONFIG -----------------------------------------------------------
 ROUTER_MODEL_PATH = "router/router_best_model.pkl"
@@ -48,11 +50,11 @@ ROUTER_MODEL_PATH = "router/router_best_model.pkl"
 # 1 categorical as the cascade router, minus fast_confidence.
 SINGLESHOT_ROUTER_MODEL_PATH = "router/router_singleshot_model.pkl"
 
-# CorrectnessGateNet single-shot routing strategy: one CNN forward pass on the
-# RAW IMAGE (no Fast pre-call, no hand-engineered feature row), predicts
-# P(correct) per tier. Costs/lambda match the training lambda sweep
-# (train_correctness_gate.py) so gateway decisions are production-consistent.
-CORRECTNESS_GATE_CHECKPOINT_PATH = "training/checkpoints/correctness_gate_best.pt"
+# CorrectnessGateNetV2b single-shot routing strategy: frozen MobileNetV3-Small
+# backbone + 24K-param trainable head (0.7572 avg AUROC, up from V1's 0.7068).
+# V1 (CorrectnessGateNet, correctness_gate_best.pt) is retained in the repo
+# as the legacy baseline for comparison -- not loaded in production.
+CORRECTNESS_GATE_CHECKPOINT_PATH = "training/checkpoints/correctness_gate_v2b_best.pt"
 CORRECTNESS_GATE_LAMBDA = 0.20
 CORRECTNESS_GATE_COSTS = {"fast": 0.480, "balanced": 0.947, "heavy": 0.986}
 CORRECTNESS_GATE_TIERS = ["fast", "balanced", "heavy"]
@@ -61,6 +63,17 @@ SERVICE_URLS = {
     "balanced": "http://balanced:8002",
     "heavy": "http://heavy:8003",
 }
+
+# Simulated added latency for Heavy calls ONLY -- represents real cloud vision
+# API latency for complex analysis (AWS Rekognition / Google Vision / Azure
+# Vision, ~2-3s per published benchmarks, Aug 2026 session research) vs. Heavy's
+# isolated-benchmark latency of ~6.29ms. The stress-test goal is to widen the
+# absolute tier-latency gap to resemble production so routing's cost advantage
+# can be measured fairly. Predictions/accuracy are NOT touched -- the sleep is
+# applied AFTER Heavy's real HTTP response is received, only delaying the reply.
+# Env override (e.g. SIMULATED_HEAVY_DELAY_MS=0 to disable) allows re-tests
+# without a rebuild.
+SIMULATED_HEAVY_DELAY_MS = int(os.environ.get("SIMULATED_HEAVY_DELAY_MS", "2500"))
 
 FAST_CHECKPOINT_PATH = "training/checkpoints/fast_cnn_best.pt"
 FAST_NUM_CLASSES = 28
@@ -132,7 +145,8 @@ ROUTING_DECISIONS = Counter(
 )
 GATEWAY_LATENCY = Histogram(
     "gateway_latency_ms", "End-to-end gateway latency in ms", ["strategy"],
-    buckets=[10, 25, 50, 75, 100, 150, 200, 300, 500, 750, 1000, 1500, 2000, 3000, 5000]
+    buckets=[10, 25, 50, 75, 100, 150, 200, 300, 500, 750, 1000, 1500, 2000, 3000, 5000,
+             7500, 10000, 15000, 20000, 30000]
 )
 
 
@@ -240,20 +254,20 @@ if "fast_confidence" in singleshot_feature_cols:
         f"Check whether you loaded the wrong pickle."
     )
 
-# ---- Load the CorrectnessGateNet single-shot router (torch CNN, NOT a sklearn
-# pickle). Predicts P(correct) per tier directly from raw image pixels -- same
-# no-Fast-pre-call shape as single_shot_router, but consumes the image itself
-# rather than a hand-engineered feature vector.
+# ---- Load the CorrectnessGateNetV2b single-shot router (frozen
+# MobileNetV3-Small backbone + 24K-param trainable head). Predicts P(correct)
+# per tier directly from raw image pixels. V1 (CorrectnessGateNet) is retained
+# in correctness_gate.py as legacy baseline, not loaded here.
 if not Path(CORRECTNESS_GATE_CHECKPOINT_PATH).exists():
-    raise RuntimeError(f"CorrectnessGateNet checkpoint not found at {CORRECTNESS_GATE_CHECKPOINT_PATH}")
+    raise RuntimeError(f"CorrectnessGateNetV2b checkpoint not found at {CORRECTNESS_GATE_CHECKPOINT_PATH}")
 
 _gate_checkpoint = torch.load(CORRECTNESS_GATE_CHECKPOINT_PATH, map_location=FAST_DEVICE)
 _gate_state_dict = _gate_checkpoint.get("model_state_dict", _gate_checkpoint) if isinstance(_gate_checkpoint, dict) else _gate_checkpoint
-correctness_gate_model = CorrectnessGateNet(num_tiers=3)
+correctness_gate_model = CorrectnessGateNetV2b(num_tiers=3)
 correctness_gate_model.load_state_dict(_gate_state_dict)
 correctness_gate_model.to(FAST_DEVICE)
 correctness_gate_model.eval()
-print(f"[gateway] CorrectnessGateNet loaded in-process on {FAST_DEVICE}")
+print(f"[gateway] CorrectnessGateNetV2b loaded in-process on {FAST_DEVICE}")
 
 
 def extract_request_features(image_bytes: bytes, file_size_kb: float):
@@ -439,6 +453,15 @@ async def route(file: UploadFile = File(...), strategy: str = "ml_router"):
             if final_resp.status_code != 200:
                 raise HTTPException(status_code=502, detail=f"{chosen_tier} tier unavailable")
             final_result = final_resp.json()
+
+            # Simulated cloud-vision latency for Heavy ONLY: real prediction is
+            # already in final_result, so accuracy is untouched -- this only delays
+            # the reply to widen the tier-latency gap for the stress test. Applies
+            # to every strategy that actually dispatches to Heavy (all converge
+            # here); never delays fast/balanced.
+            if chosen_tier == "heavy" and SIMULATED_HEAVY_DELAY_MS > 0:
+                await asyncio.sleep(SIMULATED_HEAVY_DELAY_MS / 1000)
+                timings_ms["simulated_heavy_delay_ms"] = SIMULATED_HEAVY_DELAY_MS
 
         elapsed_ms = (time.perf_counter() - start) * 1000
         GATEWAY_LATENCY.labels(strategy=strategy).observe(elapsed_ms)

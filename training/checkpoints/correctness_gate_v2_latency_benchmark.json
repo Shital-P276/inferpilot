@@ -1,0 +1,8 @@
+{
+  "result": "PASS",
+  "avg_latency_ms": 1.62,
+  "p50_latency_ms": 1.288,
+  "p95_latency_ms": 3.286,
+  "std_latency_ms": 0.718,
+  "gpu_peak_inference_mb": 10.73
+}

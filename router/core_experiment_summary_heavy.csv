@@ -1,0 +1,8 @@
+strategy,n_requests,accuracy,avg_latency_ms,p95_latency_ms,pct_fast,pct_balanced,pct_heavy
+always_fast,250,0.896,34.9,138.67,100.0,0.0,0.0
+always_heavy,250,0.988,2571.76,2714.07,0.0,0.0,100.0
+round_robin,250,0.956,884.37,2559.79,33.6,33.2,33.2
+rule_based,250,0.972,643.89,2665.9,76.0,0.0,24.0
+ml_router,250,0.972,179.93,477.8,75.2,20.0,4.8
+single_shot_router,250,0.932,107.0,243.03,85.6,11.6,2.8
+correctness_gate_router,250,0.968,637.79,2654.28,42.8,34.0,23.2

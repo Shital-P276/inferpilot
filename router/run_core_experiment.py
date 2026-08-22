@@ -13,6 +13,7 @@ produce the full comparison table required by the project plan.
 
 Output: router/core_experiment_results.csv, router/core_experiment_summary.csv
 """
+import os
 import time
 from pathlib import Path
 
@@ -22,8 +23,18 @@ from tqdm import tqdm
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 HELD_OUT_PATH = BASE_DIR / "router" / "held_out_images.csv"
-RESULTS_PATH = BASE_DIR / "router" / "core_experiment_raw_results.csv"
-SUMMARY_PATH = BASE_DIR / "router" / "core_experiment_summary.csv"
+# Env overrides let the simulated-heavy stress-test run land in NEW files
+# (e.g. core_experiment_raw_results_simulated_heavy.csv /
+# core_experiment_summary_simulated_heavy.csv) so the real baseline files are
+# preserved side by side. Defaults match the original hardcoded paths.
+RESULTS_PATH = Path(os.environ.get(
+    "CORE_EXPERIMENT_RESULTS_PATH",
+    str(BASE_DIR / "router" / "core_experiment_raw_results.csv"),
+))
+SUMMARY_PATH = Path(os.environ.get(
+    "CORE_EXPERIMENT_SUMMARY_PATH",
+    str(BASE_DIR / "router" / "core_experiment_summary.csv"),
+))
 
 GATEWAY_URL = "http://localhost:8000/route"
 STRATEGIES = ["always_fast", "always_heavy", "round_robin", "rule_based", "ml_router", "single_shot_router", "correctness_gate_router"]
