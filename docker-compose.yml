@@ -81,7 +81,16 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - SIMULATED_HEAVY_DELAY_MS=${SIMULATED_HEAVY_DELAY_MS:-2500}
+      - SIMULATED_HEAVY_DELAY_MS=${SIMULATED_HEAVY_DELAY_MS:-0}
+      # Resilience tuning (defaults = stock behavior; chaos tests override).
+      # FAULT_INJECTION="tier:rate" (e.g. "heavy:1.0") makes the gateway raise
+      # simulated tier failures deterministically -- no docker stops needed.
+      - FAULT_INJECTION=${FAULT_INJECTION:-}
+      - BREAKER_FAILURE_THRESHOLD=${BREAKER_FAILURE_THRESHOLD:-5}
+      - BREAKER_OPEN_TIMEOUT_S=${BREAKER_OPEN_TIMEOUT_S:-30}
+      - BULKHEAD_FAST=${BULKHEAD_FAST:-100}
+      - BULKHEAD_BALANCED=${BULKHEAD_BALANCED:-50}
+      - BULKHEAD_HEAVY=${BULKHEAD_HEAVY:-25}
     restart: unless-stopped
     networks:
       - inferpilot-net

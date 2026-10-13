@@ -1,0 +1,600 @@
+strategy,image_path,true_label,predicted_class,correct,routed_tier,fallback_from,degraded_routing,gateway_latency_ms
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/27329.jpg,mazama pandora,meleagris ocellata,0,balanced,heavy,,413.9
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/6984.jpg,leopardus pardalis,empty,0,balanced,,,387.19
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/15754.jpg,empty,empty,1,balanced,,,87.79
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/3693.jpg,cephalophus nigrifrons,empty,0,balanced,,,71.98
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/25803.jpg,equus ferus,puma concolor,0,balanced,heavy,,304.26
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/34009.jpg,bos taurus,bos taurus,1,heavy,,,473.53
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/38517.jpg,tapirus bairdii,leopardus pardalis,0,balanced,,,85.72
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/1928.jpg,hystrix brachyura,empty,0,balanced,,,83.32
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/39299.jpg,dasyprocta punctata,dasyprocta punctata,1,balanced,,,86.91
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/7680.jpg,panthera leo,aepyceros melampus,0,balanced,,,85.38
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/13020.jpg,ovis aries,equus quagga,0,balanced,,,82.88
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/38792.jpg,agouti paca,leopardus pardalis,0,balanced,,,82.5
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/1518.jpg,macaca sp,empty,0,balanced,heavy,,82.23
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9940.jpg,leptotila plumbeiceps,meleagris ocellata,0,balanced,,,80.51
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/1433.jpg,cricetomys gambianus,cricetomys gambianus,1,balanced,,,80.91
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/3544.jpg,cephalophus nigrifrons,cephalophus nigrifrons,1,balanced,,,82.71
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9879.jpg,dasyprocta punctata,empty,0,balanced,,,88.57
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/7799.jpg,lycaon pictus,madoqua guentheri,0,heavy,,,74.34
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/8446.jpg,tapirus bairdii,tapirus bairdii,1,balanced,,,80.57
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/16613.jpg,empty,empty,1,balanced,,,83.56
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/5662.jpg,leopardus pardalis,leopardus pardalis,1,balanced,,,46.82
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/12864.jpg,ovis aries,bos taurus,0,balanced,,,46.69
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/31513.jpg,aepyceros melampus,aepyceros melampus,1,heavy,,,68.58
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/29791.jpg,aepyceros melampus,aepyceros melampus,1,heavy,,,77.47
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/7689.jpg,panthera leo,tapirus bairdii,0,fast,,,331.08
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/2217.jpg,crocuta crocuta,crocuta crocuta,1,heavy,,,90.48
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/28117.jpg,equus ferus,empty,0,balanced,,,97.23
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/11007.jpg,agouti paca,puma concolor,0,balanced,heavy,,89.58
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/6733.jpg,urocyon cinereoargenteus,empty,0,balanced,,,88.69
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/39738.jpg,nasua narica,nasua narica,1,balanced,,,85.84
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/2032.jpg,macaca sp,macaca sp,1,balanced,,,85.53
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/38078.jpg,leopardus wiedii,agouti paca,0,balanced,,,90.46
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/19299.jpg,empty,empty,1,balanced,,,88.51
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/37450.jpg,empty,empty,1,heavy,,,88.13
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/28938.jpg,madoqua guentheri,madoqua guentheri,1,balanced,,,85.59
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/28418.jpg,syncerus caffer,equus quagga,0,balanced,,,80.82
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/24694.jpg,cercopithecus lhoesti,cephalophus nigrifrons,0,balanced,,,84.39
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/12842.jpg,aepyceros melampus,aepyceros melampus,1,balanced,,,87.67
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/34009.jpg,bos taurus,bos taurus,1,heavy,,,89.34
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/7295.jpg,leopardus pardalis,panthera onca,0,balanced,,,86.94
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/14.jpg,neofelis diardi,neofelis diardi,1,balanced,,,85.17
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/41550.jpg,dasyprocta punctata,dasyprocta punctata,1,balanced,,,86.12
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/4359.jpg,cephalophus nigrifrons,cephalophus nigrifrons,1,balanced,,,89.84
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/38023.jpg,puma concolor,leopardus pardalis,0,balanced,,,53.77
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/2255.jpg,equus quagga,equus quagga,1,balanced,,,53.33
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/11177.jpg,didelphis sp,didelphis sp,1,heavy,,,132.74
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/25768.jpg,puma concolor,puma concolor,1,heavy,,,83.84
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/29011.jpg,madoqua guentheri,madoqua guentheri,1,fast,,,90.4
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/10695.jpg,meleagris ocellata,meleagris ocellata,1,heavy,,,97.41
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/662.jpg,argusianus argus,helarctos malayanus,0,balanced,,,89.37
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/41879.jpg,panthera onca,panthera onca,1,balanced,,,81.41
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/30757.jpg,loxodonta africana,phacochoerus africanus,0,balanced,heavy,,83.83
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/1358.jpg,mus minutoides,atherurus africanus,0,heavy,,,94.38
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/2314.jpg,acryllium vulturinum,madoqua guentheri,0,balanced,heavy,,93.77
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/2307.jpg,acryllium vulturinum,acryllium vulturinum,1,balanced,heavy,,88.73
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9478.jpg,didelphis sp,leopardus pardalis,0,heavy,,,89.44
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/25974.jpg,equus ferus,motorcycle,0,balanced,,,59.62
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/37137.jpg,aepyceros melampus,aepyceros melampus,1,heavy,,,142.83
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/36448.jpg,aepyceros melampus,aepyceros melampus,1,heavy,,,83.01
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/3083.jpg,lycaon pictus,aepyceros melampus,0,balanced,,,82.78
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/29021.jpg,giraffa camelopardalis,madoqua guentheri,0,fast,,,82.34
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/41282.jpg,crax rubra,crax rubra,1,balanced,,,86.55
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/4582.jpg,francolinus nobilis,meleagris ocellata,0,heavy,,,85.76
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/26011.jpg,leopardus pardalis,puma concolor,0,balanced,,,80.72
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/7887.jpg,agouti paca,leopardus pardalis,0,heavy,,,81.1
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/36194.jpg,bos taurus,bos taurus,1,balanced,,,82.2
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/24655.jpg,unknown bat,empty,0,balanced,,,83.48
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/34058.jpg,bos taurus,bos taurus,1,heavy,,,87.25
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/34781.jpg,papio anubis,papio anubis,1,heavy,,,86.96
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/8291.jpg,tapirus bairdii,tapirus bairdii,1,balanced,heavy,,85.02
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/10738.jpg,cuniculus paca,leopardus pardalis,0,balanced,,,83.13
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/38423.jpg,penelope purpurascens,empty,0,balanced,,,81.45
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/38481.jpg,tapirus bairdii,loxodonta africana,0,balanced,,,84.57
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/41805.jpg,pecari tajacu,dasyprocta punctata,0,heavy,,,87.67
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9153.jpg,agouti paca,tapirus bairdii,0,heavy,,,83.74
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/32459.jpg,bos taurus,bos taurus,1,heavy,,,130.87
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/8196.jpg,motorcycle,dasyprocta punctata,0,heavy,,,131.34
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/42694.jpg,bos taurus,bos taurus,1,balanced,,,94.36
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/13237.jpg,equus quagga,equus quagga,1,balanced,,,95.95
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/26987.jpg,tinamus major,leptotila plumbeiceps,0,balanced,,,88.66
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/4147.jpg,cephalophus nigrifrons,cercopithecus lhoesti,0,balanced,,,87.36
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9924.jpg,didelphis sp,didelphis sp,1,heavy,,,88.28
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9089.jpg,cuniculus paca,leopardus pardalis,0,balanced,,,88.79
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/38184.jpg,mazama temama,dasyprocta punctata,0,balanced,,,91.51
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/7847.jpg,kobus ellipsiprymnus,empty,0,balanced,,,95.59
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/29483.jpg,aepyceros melampus,phacochoerus africanus,0,heavy,,,91.85
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9297.jpg,nasua narica,nasua narica,1,balanced,,,86.87
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/32494.jpg,equus quagga,equus quagga,1,heavy,,,83.71
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/36150.jpg,loxodonta africana,loxodonta africana,1,heavy,,,84.11
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/41431.jpg,sciurus sp,dasyprocta punctata,0,balanced,,,84.78
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9478.jpg,didelphis sp,leopardus pardalis,0,heavy,,,85.12
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/1066.jpg,cricetomys gambianus,cricetomys gambianus,1,balanced,,,89.07
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/828.jpg,equus grevyi,phacochoerus africanus,0,balanced,heavy,,86.25
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9000.jpg,leopardus pardalis,leopardus pardalis,1,balanced,,,88.59
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/12947.jpg,camelus dromedarius,camelus dromedarius,1,balanced,,,91.9
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9810.jpg,dasyprocta punctata,tayassu pecari,0,balanced,,,83.9
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/38166.jpg,mazama temama,crax rubra,0,heavy,,,84.32
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/30984.jpg,phacochoerus africanus,aepyceros melampus,0,heavy,,,89.21
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/0.jpg,macaca sp,muntiacus muntjak,0,balanced,,,96.8
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/28464.jpg,acryllium vulturinum,madoqua guentheri,0,balanced,,,98.87
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/430.jpg,argusianus argus,argusianus argus,1,heavy,,,96.98
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/29153.jpg,phacochoerus africanus,papio anubis,0,balanced,,,92.45
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/28684.jpg,oryx beisa,aepyceros melampus,0,fast,,,90.04
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/1007.jpg,cephalophus nigrifrons,cephalophus nigrifrons,1,balanced,,,86.86
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/27306.jpg,geotrygon montana,leptotila plumbeiceps,0,balanced,,,82.84
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/34146.jpg,acryllium vulturinum,nanger granti,0,balanced,heavy,,81.95
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/12896.jpg,equus quagga,equus quagga,1,balanced,,,80.85
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/27787.jpg,puma concolor,urocyon cinereoargenteus,0,heavy,,,87.34
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/1512.jpg,paraxerus boehmi,empty,0,balanced,,,87.72
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/36529.jpg,loxodonta africana,loxodonta africana,1,heavy,,,74.83
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/28436.jpg,syncerus caffer,equus quagga,0,balanced,,,84.38
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/35724.jpg,aepyceros melampus,phacochoerus africanus,0,balanced,heavy,,93.66
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/40798.jpg,peromyscus sp,sciurus sp,0,balanced,,,80.46
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/38019.jpg,puma concolor,leopardus pardalis,0,balanced,,,45.87
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/18751.jpg,empty,empty,1,balanced,,,55.62
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/36529.jpg,loxodonta africana,loxodonta africana,1,heavy,,,135.65
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/1927.jpg,hystrix brachyura,hystrix brachyura,1,balanced,,,80.32
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/10147.jpg,didelphis sp,puma concolor,0,balanced,heavy,,79.88
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9915.jpg,didelphis sp,didelphis sp,1,balanced,,,80.94
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/29061.jpg,crocuta crocuta,madoqua guentheri,0,fast,,,86.25
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/10387.jpg,penelope purpurascens,penelope purpurascens,1,heavy,,,78.46
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/3202.jpg,madoqua guentheri,empty,0,balanced,,,57.38
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/10403.jpg,panthera onca,panthera onca,1,heavy,,,135.78
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/10432.jpg,crax rubra,crax rubra,1,heavy,,,79.06
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/28402.jpg,loxodonta africana,loxodonta africana,1,balanced,,,80.96
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/24689.jpg,cephalophus silvicultor,tinamus major,0,balanced,,,86.34
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/3067.jpg,capra aegagrus,aepyceros melampus,0,balanced,,,92.0
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/40284.jpg,leopardus pardalis,leopardus pardalis,1,balanced,,,93.36
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/39078.jpg,tinamus major,empty,0,balanced,,,87.78
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/41431.jpg,sciurus sp,dasyprocta punctata,0,balanced,,,85.87
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/12992.jpg,camelus dromedarius,camelus dromedarius,1,balanced,,,85.33
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/23488.jpg,empty,empty,1,balanced,,,83.78
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/10237.jpg,agouti paca,puma concolor,0,balanced,,,87.43
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/25742.jpg,equus ferus,empty,0,balanced,,,84.26
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/8355.jpg,tapirus bairdii,equus quagga,0,balanced,,,89.81
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9816.jpg,puma concolor,leopardus pardalis,0,balanced,,,94.55
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/39547.jpg,dasyprocta punctata,dasyprocta punctata,1,balanced,,,87.56
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/36690.jpg,papio anubis,phacochoerus africanus,0,balanced,,,87.82
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/27953.jpg,crax rubra,crax rubra,1,heavy,,,91.74
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/25739.jpg,equus ferus,empty,0,balanced,,,91.32
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/31098.jpg,phacochoerus africanus,oryx beisa,0,balanced,heavy,,51.47
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/28763.jpg,crocuta crocuta,aepyceros melampus,0,balanced,,,61.62
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/30952.jpg,phacochoerus africanus,aepyceros melampus,0,heavy,,,150.71
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9502.jpg,tinamus major,empty,0,balanced,,,87.93
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/40616.jpg,mazama temama,crax rubra,0,balanced,,,81.76
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9053.jpg,puma concolor,empty,0,balanced,,,84.86
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/42043.jpg,panthera onca,panthera onca,1,balanced,,,51.87
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/41849.jpg,leopardus pardalis,panthera onca,0,balanced,,,89.08
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/5675.jpg,mazama temama,aepyceros melampus,0,balanced,,,91.1
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/496.jpg,rollulus rouloul,argusianus argus,0,balanced,,,81.47
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/34347.jpg,aepyceros melampus,aepyceros melampus,1,heavy,,,97.47
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/10432.jpg,crax rubra,crax rubra,1,heavy,,,118.41
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/2567.jpg,syncerus caffer,loxodonta africana,0,balanced,heavy,,61.41
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/41732.jpg,agouti paca,agouti paca,1,balanced,,,90.28
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/39083.jpg,tinamus major,empty,0,balanced,,,98.92
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/27641.jpg,equus ferus,equus ferus,1,heavy,,,90.91
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/10217.jpg,crax rubra,equus ferus,0,balanced,,,98.86
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/3585.jpg,francolinus nobilis,francolinus nobilis,1,balanced,,,58.57
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/13231.jpg,empty,empty,1,balanced,heavy,,87.2
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/5209.jpg,urocyon cinereoargenteus,empty,0,balanced,,,91.67
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/28489.jpg,acryllium vulturinum,madoqua guentheri,0,balanced,,,80.49
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/33459.jpg,equus quagga,equus quagga,1,heavy,,,86.93
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/1133.jpg,cephalophus nigrifrons,cephalophus nigrifrons,1,balanced,,,83.3
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/11830.jpg,paraxerus boehmi,tinamus major,0,balanced,,,77.51
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/31204.jpg,phacochoerus africanus,phacochoerus africanus,1,balanced,heavy,,80.21
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/6984.jpg,leopardus pardalis,empty,0,balanced,,,48.07
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/24823.jpg,equus quagga,motorcycle,0,balanced,,,57.79
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/26669.jpg,crax rubra,meleagris ocellata,0,balanced,,,97.17
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/12878.jpg,camelus dromedarius,aepyceros melampus,0,balanced,,,85.42
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/29214.jpg,oryx beisa,madoqua guentheri,0,fast,,,89.68
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9491.jpg,tinamus major,crax rubra,0,heavy,,,92.8
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9460.jpg,panthera onca,urocyon cinereoargenteus,0,heavy,,,90.83
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/532.jpg,hystrix brachyura,hystrix brachyura,1,balanced,,,47.15
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/1343.jpg,funisciurus carruthersi,cephalophus nigrifrons,0,balanced,,,84.93
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/34180.jpg,phacochoerus africanus,nanger granti,0,balanced,heavy,,53.82
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/8530.jpg,leopardus pardalis,meleagris ocellata,0,balanced,,,82.33
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/1575.jpg,hystrix brachyura,hystrix brachyura,1,balanced,,,84.57
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/6675.jpg,leopardus pardalis,empty,0,balanced,,,80.77
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/4604.jpg,francolinus nobilis,francolinus nobilis,1,fast,,,81.97
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/11244.jpg,tapirus bairdii,tapirus bairdii,1,balanced,,,84.11
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/39519.jpg,nasua narica,crax rubra,0,balanced,,,86.64
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/7774.jpg,panthera pardus,empty,0,balanced,,,85.82
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/34178.jpg,phacochoerus africanus,empty,0,balanced,heavy,,86.48
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/10247.jpg,dasyprocta punctata,motorcycle,0,balanced,,,91.8
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/28430.jpg,syncerus caffer,syncerus caffer,1,balanced,,,92.99
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/39767.jpg,nasua narica,nasua narica,1,balanced,heavy,,50.43
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/26113.jpg,puma concolor,puma concolor,1,balanced,,,56.12
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/42137.jpg,panthera onca,panthera onca,1,heavy,,,140.19
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/27772.jpg,equus ferus,empty,0,balanced,,,79.81
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/42491.jpg,dasyprocta punctata,crax rubra,0,balanced,,,91.38
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/37781.jpg,urocyon cinereoargenteus,urocyon cinereoargenteus,1,heavy,,,95.71
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/28596.jpg,acryllium vulturinum,empty,0,balanced,,,83.8
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/36872.jpg,loxodonta africana,syncerus caffer,0,balanced,heavy,,81.64
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/26526.jpg,crax rubra,meleagris ocellata,0,balanced,,,82.89
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/37857.jpg,nasua narica,dasyprocta punctata,0,balanced,,,49.2
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/2592.jpg,empty,empty,1,balanced,,,86.95
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/10144.jpg,didelphis sp,puma concolor,0,balanced,heavy,,93.71
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/13045.jpg,lepus saxatilis,empty,0,balanced,,,85.61
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/42600.jpg,leopardus pardalis,leopardus wiedii,0,balanced,,,86.57
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/1500.jpg,cricetomys gambianus,cricetomys gambianus,1,heavy,,,84.3
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/3465.jpg,loxodonta africana,loxodonta africana,1,balanced,,,83.8
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/28868.jpg,oryx beisa,aepyceros melampus,0,fast,,,78.7
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/2334.jpg,acryllium vulturinum,acryllium vulturinum,1,heavy,,,81.45
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/23463.jpg,empty,empty,1,balanced,,,82.57
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/28584.jpg,acryllium vulturinum,empty,0,balanced,,,80.04
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/28656.jpg,acryllium vulturinum,empty,0,fast,,,85.45
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/38553.jpg,motorcycle,crax rubra,0,balanced,,,87.69
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/41152.jpg,crax rubra,crax rubra,1,balanced,heavy,,82.68
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/11172.jpg,didelphis sp,didelphis sp,1,heavy,,,83.79
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/4608.jpg,francolinus nobilis,francolinus nobilis,1,balanced,,,83.46
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/24762.jpg,cerdocyon thous,tapirus bairdii,0,heavy,,,83.89
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/13250.jpg,syncerus caffer,syncerus caffer,1,balanced,,,82.07
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/5656.jpg,leopardus pardalis,leopardus pardalis,1,balanced,,,79.62
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/24666.jpg,mazama americana,muntiacus muntjak,0,balanced,heavy,,48.23
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/4536.jpg,genetta servalina,cephalophus nigrifrons,0,balanced,,,95.31
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9175.jpg,agouti paca,agouti paca,1,heavy,,,102.44
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/5729.jpg,mazama temama,muntiacus muntjak,0,balanced,,,80.07
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/10737.jpg,cuniculus paca,leopardus pardalis,0,balanced,,,81.89
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/3247.jpg,bos taurus,bos taurus,1,balanced,,,81.56
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/38526.jpg,tapirus bairdii,loxodonta africana,0,balanced,,,81.22
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/25586.jpg,meleagris ocellata,meleagris ocellata,1,heavy,,,86.39
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/38323.jpg,urocyon cinereoargenteus,tayassu pecari,0,balanced,,,82.14
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9118.jpg,cuniculus paca,leopardus pardalis,0,balanced,,,80.04
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/41888.jpg,panthera onca,panthera onca,1,balanced,,,86.59
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/27844.jpg,mazama pandora,panthera onca,0,heavy,,,90.06
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/12738.jpg,capra aegagrus,madoqua guentheri,0,balanced,,,85.38
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/38678.jpg,urocyon cinereoargenteus,tapirus bairdii,0,balanced,,,81.03
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/13020.jpg,ovis aries,equus quagga,0,balanced,,,82.98
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/37508.jpg,giraffa camelopardalis,madoqua guentheri,0,fast,,,84.28
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/7955.jpg,motorcycle,empty,0,heavy,,,86.41
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/24758.jpg,funisciurus carruthersi,giraffa camelopardalis,0,balanced,,,84.49
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/39944.jpg,agouti paca,leopardus pardalis,0,balanced,,,84.41
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/29199.jpg,madoqua guentheri,empty,0,balanced,,,84.31
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/935.jpg,equus quagga,equus quagga,1,balanced,,,81.88
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/8933.jpg,panthera onca,panthera onca,1,balanced,,,49.43
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/10815.jpg,agouti paca,meleagris ocellata,0,balanced,heavy,,93.87
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/33183.jpg,bos taurus,bos taurus,1,heavy,,,94.27
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/11314.jpg,tapirus bairdii,tapirus bairdii,1,balanced,,,77.21
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/28437.jpg,syncerus caffer,equus quagga,0,balanced,,,82.58
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/931.jpg,papio anubis,papio anubis,1,heavy,,,86.13
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/42436.jpg,tinamus major,dasyprocta punctata,0,balanced,,,84.26
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/4950.jpg,tapirus bairdii,tapirus bairdii,1,heavy,,,83.48
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/29128.jpg,crocuta crocuta,aepyceros melampus,0,fast,,,82.5
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9460.jpg,panthera onca,urocyon cinereoargenteus,0,heavy,,,84.79
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/12943.jpg,camelus dromedarius,camelus dromedarius,1,balanced,,,86.15
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/28757.jpg,crocuta crocuta,papio anubis,0,balanced,,,82.58
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/10237.jpg,agouti paca,puma concolor,0,balanced,,,82.4
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/3585.jpg,francolinus nobilis,francolinus nobilis,1,balanced,,,84.9
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/31128.jpg,phacochoerus africanus,aepyceros melampus,0,heavy,,,84.28
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/29068.jpg,lycaon pictus,equus quagga,0,balanced,,,47.49
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9809.jpg,dasyprocta punctata,tayassu pecari,0,balanced,,,82.58
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/10600.jpg,meleagris ocellata,meleagris ocellata,1,balanced,,,87.12
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/1648.jpg,hystrix brachyura,hystrix brachyura,1,balanced,,,79.97
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/29340.jpg,acryllium vulturinum,acryllium vulturinum,1,heavy,,,85.01
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/8237.jpg,tapirus bairdii,tapirus bairdii,1,balanced,,,83.43
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/31150.jpg,phacochoerus africanus,capra aegagrus,0,balanced,heavy,,85.75
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/41567.jpg,dasyprocta punctata,dasyprocta punctata,1,balanced,,,88.77
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/10836.jpg,puma concolor,didelphis sp,0,heavy,,,84.78
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/1367.jpg,paraxerus boehmi,macaca sp,0,balanced,,,83.04
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9397.jpg,mazama temama,mazama temama,1,balanced,heavy,,83.58
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/28812.jpg,oryx beisa,empty,0,fast,,,50.07
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/8975.jpg,motorcycle,empty,0,balanced,,,91.27
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/33014.jpg,equus grevyi,papio anubis,0,balanced,heavy,,99.57
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/13047.jpg,lepus saxatilis,didelphis sp,0,balanced,,,87.25
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/28431.jpg,syncerus caffer,syncerus caffer,1,balanced,,,88.3
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/29215.jpg,oryx beisa,madoqua guentheri,0,fast,,,83.71
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/2110.jpg,macaca sp,macaca sp,1,balanced,,,78.21
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/10826.jpg,puma concolor,puma concolor,1,balanced,,,83.55
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/40756.jpg,mazama pandora,empty,0,balanced,,,86.8
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/36366.jpg,loxodonta africana,loxodonta africana,1,balanced,heavy,,83.1
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/28787.jpg,lycaon pictus,phacochoerus africanus,0,balanced,,,82.02
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/6495.jpg,urocyon cinereoargenteus,crax rubra,0,balanced,,,83.63
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/28842.jpg,syncerus caffer,loxodonta africana,0,balanced,,,82.19
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/40494.jpg,agouti paca,didelphis sp,0,balanced,,,80.76
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/34214.jpg,phacochoerus africanus,nanger granti,0,balanced,heavy,,82.16
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/12737.jpg,ovis aries,madoqua guentheri,0,balanced,,,82.56
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/3112.jpg,capra aegagrus,cephalophus nigrifrons,0,balanced,,,83.3
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9668.jpg,dasyprocta punctata,dasyprocta punctata,1,balanced,,,79.98
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/819.jpg,equus grevyi,equus quagga,0,balanced,,,77.5
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/28763.jpg,crocuta crocuta,aepyceros melampus,0,balanced,,,83.51
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/26134.jpg,puma concolor,puma concolor,1,balanced,,,85.02
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/2592.jpg,empty,empty,1,balanced,,,81.3
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9153.jpg,agouti paca,crax rubra,0,balanced,heavy,,81.58
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/34222.jpg,phacochoerus africanus,empty,0,balanced,heavy,,79.46
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/40482.jpg,motorcycle,leopardus pardalis,0,fast,,,47.81
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/28730.jpg,crocuta crocuta,aepyceros melampus,0,balanced,,,83.03
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/39306.jpg,agouti paca,crax rubra,0,balanced,heavy,,98.05
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/40032.jpg,nasua narica,empty,0,balanced,,,93.82
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/6219.jpg,agouti paca,agouti paca,1,balanced,,,88.36
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/1518.jpg,macaca sp,empty,0,balanced,heavy,,50.61
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/38959.jpg,motorcycle,nasua narica,0,fast,,,84.69
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/40475.jpg,puma concolor,dasyprocta punctata,0,balanced,,,93.92
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/40537.jpg,leopardus pardalis,agouti paca,0,balanced,,,82.79
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/1482.jpg,cricetomys gambianus,francolinus nobilis,0,balanced,,,82.63
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9277.jpg,didelphis sp,crax rubra,0,balanced,heavy,,85.91
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/10715.jpg,agouti paca,meleagris ocellata,0,balanced,heavy,,54.02
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/19388.jpg,empty,empty,1,balanced,,,95.51
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/39911.jpg,tapirus bairdii,leopardus pardalis,0,balanced,,,101.85
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/34196.jpg,phacochoerus africanus,phacochoerus africanus,1,balanced,heavy,,84.24
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9855.jpg,didelphis sp,puma concolor,0,balanced,,,82.03
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/26011.jpg,leopardus pardalis,puma concolor,0,balanced,,,81.3
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/25939.jpg,equus ferus,empty,0,balanced,,,84.56
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/42440.jpg,tinamus major,dasyprocta punctata,0,balanced,,,87.28
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/12920.jpg,lepus saxatilis,madoqua guentheri,0,balanced,,,86.5
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/18268.jpg,empty,empty,1,fast,,,85.68
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/37821.jpg,urocyon cinereoargenteus,puma concolor,0,balanced,,,59.35
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/4278.jpg,francolinus nobilis,meleagris ocellata,0,balanced,heavy,,88.25
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/1648.jpg,hystrix brachyura,hystrix brachyura,1,balanced,,,93.82
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/5399.jpg,tapirus bairdii,tapirus bairdii,1,balanced,,,83.13
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/41867.jpg,panthera onca,panthera onca,1,balanced,,,83.96
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/39748.jpg,nasua narica,macaca sp,0,balanced,,,86.3
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/18832.jpg,empty,empty,1,balanced,,,83.68
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/11625.jpg,madoqua guentheri,papio anubis,0,balanced,heavy,,83.34
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/26432.jpg,meleagris ocellata,empty,0,balanced,heavy,,87.21
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/34082.jpg,phacochoerus africanus,loxodonta africana,0,balanced,heavy,,84.23
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/14009.jpg,empty,empty,1,balanced,,,84.87
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/3378.jpg,madoqua guentheri,empty,0,balanced,,,85.1
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/8996.jpg,leopardus pardalis,leopardus pardalis,1,fast,,,85.31
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/6921.jpg,meleagris ocellata,meleagris ocellata,1,balanced,,,87.76
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/6528.jpg,nasua narica,nasua narica,1,balanced,,,88.44
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/42043.jpg,panthera onca,panthera onca,1,balanced,,,91.06
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/41849.jpg,leopardus pardalis,panthera onca,0,balanced,,,89.36
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9866.jpg,leptotila plumbeiceps,dasyprocta punctata,0,balanced,,,84.0
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/10728.jpg,agouti paca,meleagris ocellata,0,balanced,heavy,,84.38
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/42461.jpg,pecari tajacu,tayassu pecari,0,balanced,,,88.84
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/28651.jpg,acryllium vulturinum,empty,0,fast,,,91.13
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/7821.jpg,kobus ellipsiprymnus,kobus ellipsiprymnus,1,balanced,heavy,,62.66
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/34178.jpg,phacochoerus africanus,empty,0,balanced,heavy,,98.81
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/8729.jpg,motorcycle,meleagris ocellata,0,balanced,,,103.82
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/33366.jpg,loxodonta africana,aepyceros melampus,0,balanced,heavy,,87.59
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/25671.jpg,meleagris ocellata,meleagris ocellata,1,balanced,,,93.11
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/532.jpg,hystrix brachyura,hystrix brachyura,1,balanced,,,92.9
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/39722.jpg,nasua narica,martes flavigula,0,balanced,heavy,,90.56
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/39654.jpg,urocyon cinereoargenteus,urocyon cinereoargenteus,1,balanced,,,91.04
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/10815.jpg,agouti paca,meleagris ocellata,0,balanced,heavy,,85.47
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/3008.jpg,leptailurus serval,panthera pardus,0,balanced,,,82.53
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/1918.jpg,hystrix brachyura,empty,0,balanced,,,58.05
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/2975.jpg,madoqua guentheri,empty,0,balanced,heavy,,98.22
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/35332.jpg,aepyceros melampus,equus quagga,0,balanced,heavy,,104.26
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/28938.jpg,madoqua guentheri,madoqua guentheri,1,balanced,,,82.43
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/38422.jpg,penelope purpurascens,empty,0,balanced,,,88.42
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/3970.jpg,cephalophus nigrifrons,crax rubra,0,balanced,,,88.2
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9163.jpg,agouti paca,agouti paca,1,balanced,heavy,,87.12
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/39383.jpg,puma concolor,empty,0,balanced,,,84.99
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/10858.jpg,puma concolor,puma concolor,1,balanced,,,83.93
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/38464.jpg,tapirus bairdii,tapirus bairdii,1,balanced,,,85.47
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/7777.jpg,lycaon pictus,madoqua guentheri,0,balanced,heavy,,119.2
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9914.jpg,didelphis sp,didelphis sp,1,balanced,,,122.02
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/25941.jpg,equus ferus,empty,0,balanced,,,89.91
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/38500.jpg,tapirus bairdii,leopardus pardalis,0,balanced,,,88.31
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/39685.jpg,procyon lotor,agouti paca,0,balanced,,,86.84
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/6219.jpg,agouti paca,agouti paca,1,balanced,,,90.7
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/3073.jpg,capra aegagrus,empty,0,balanced,,,91.44
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/31228.jpg,phacochoerus africanus,bos taurus,0,balanced,heavy,,88.5
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/12867.jpg,capra aegagrus,ovis aries,0,balanced,,,92.22
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9365.jpg,mazama temama,mazama temama,1,balanced,heavy,,94.04
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/35044.jpg,aepyceros melampus,nanger granti,0,balanced,heavy,,86.14
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/29094.jpg,giraffa camelopardalis,giraffa camelopardalis,1,balanced,heavy,,82.86
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/41742.jpg,dasyprocta punctata,dasyprocta punctata,1,balanced,,,84.17
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/25584.jpg,meleagris ocellata,meleagris ocellata,1,balanced,heavy,,85.81
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/1368.jpg,paraxerus boehmi,empty,0,balanced,,,86.24
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/25920.jpg,meleagris ocellata,meleagris ocellata,1,balanced,heavy,,83.84
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/26739.jpg,meleagris ocellata,meleagris ocellata,1,balanced,,,60.58
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/5722.jpg,mazama temama,muntiacus muntjak,0,balanced,,,106.99
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/1535.jpg,macaca sp,macaca sp,1,balanced,,,108.94
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/11832.jpg,cricetomys gambianus,empty,0,balanced,,,83.92
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/3379.jpg,madoqua guentheri,equus quagga,0,balanced,,,83.48
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/31254.jpg,phacochoerus africanus,oryx beisa,0,balanced,heavy,,140.71
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/32889.jpg,equus quagga,empty,0,fast,,,143.53
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/29075.jpg,syncerus caffer,equus quagga,0,balanced,,,85.27
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/24659.jpg,mazama americana,muntiacus muntjak,0,balanced,heavy,,83.51
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/5724.jpg,mazama temama,muntiacus muntjak,0,balanced,,,84.24
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/24721.jpg,funisciurus carruthersi,funisciurus carruthersi,1,balanced,,,87.81
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/42342.jpg,dasyprocta punctata,dasyprocta punctata,1,balanced,,,97.26
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/1088.jpg,cricetomys gambianus,cephalophus nigrifrons,0,balanced,heavy,,97.32
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/11872.jpg,paraxerus boehmi,cercopithecus lhoesti,0,balanced,,,89.22
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/25822.jpg,equus ferus,meleagris ocellata,0,balanced,heavy,,71.51
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/787.jpg,bos taurus,bos taurus,1,balanced,,,99.62
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/11889.jpg,cricetomys gambianus,cricetomys gambianus,1,balanced,heavy,,106.24
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/10550.jpg,crax rubra,crax rubra,1,balanced,,,66.96
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/891.jpg,papio anubis,empty,0,balanced,heavy,,100.47
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/5389.jpg,tapirus bairdii,tapirus bairdii,1,balanced,,,136.71
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/32235.jpg,aepyceros melampus,camelus dromedarius,0,balanced,heavy,,67.26
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/25975.jpg,equus ferus,motorcycle,0,balanced,,,151.11
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/3078.jpg,lycaon pictus,empty,0,balanced,,,86.36
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/38789.jpg,agouti paca,leopardus pardalis,0,balanced,,,88.3
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/31258.jpg,phacochoerus africanus,phacochoerus africanus,1,balanced,heavy,,89.11
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/3611.jpg,pan troglodytes,tayassu pecari,0,balanced,heavy,,90.46
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/11883.jpg,atherurus africanus,atherurus africanus,1,balanced,heavy,,91.06
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/38328.jpg,sciurus sp,cercopithecus lhoesti,0,fast,,,91.44
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/40770.jpg,dasyprocta punctata,dasyprocta punctata,1,balanced,,,90.46
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/8501.jpg,puma concolor,puma concolor,1,balanced,heavy,,81.11
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/2199.jpg,macaca sp,empty,0,balanced,heavy,,83.1
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/961.jpg,cricetomys gambianus,cricetomys gambianus,1,balanced,heavy,,86.2
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/3122.jpg,capra aegagrus,ovis aries,0,balanced,,,68.71
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9355.jpg,mazama temama,empty,0,balanced,heavy,,110.71
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/39138.jpg,mazama temama,leopardus pardalis,0,balanced,,,119.03
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/25941.jpg,equus ferus,empty,0,balanced,,,88.42
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/30226.jpg,loxodonta africana,nanger granti,0,balanced,heavy,,89.7
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/41979.jpg,panthera onca,panthera onca,1,balanced,,,87.13
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/10847.jpg,claravis pretiosa,empty,0,fast,,,84.83
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/28615.jpg,acryllium vulturinum,madoqua guentheri,0,balanced,,,87.4
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/11781.jpg,paraxerus boehmi,empty,0,balanced,heavy,,90.87
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/13417.jpg,panthera pardus,leopardus pardalis,0,balanced,,,86.96
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/6011.jpg,meleagris ocellata,meleagris ocellata,1,balanced,heavy,,87.11
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/40419.jpg,panthera onca,loxodonta africana,0,balanced,,,88.37
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/37205.jpg,loxodonta africana,oryx beisa,0,balanced,heavy,,84.97
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/29790.jpg,aepyceros melampus,nanger granti,0,balanced,heavy,,82.93
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/11822.jpg,paraxerus boehmi,empty,0,balanced,,,85.17
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/41429.jpg,sciurus sp,dasyprocta punctata,0,balanced,,,85.72
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/3544.jpg,cephalophus nigrifrons,cephalophus nigrifrons,1,balanced,,,87.86
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/42665.jpg,didelphis sp,peromyscus sp,0,balanced,,,91.01
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/12850.jpg,ovis aries,equus quagga,0,balanced,,,86.78
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/4978.jpg,tapirus bairdii,tapirus bairdii,1,balanced,,,86.91
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/496.jpg,rollulus rouloul,argusianus argus,0,balanced,,,57.81
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/2152.jpg,macaca sp,macaca sp,1,balanced,heavy,,92.18
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/39848.jpg,leopardus pardalis,leopardus pardalis,1,balanced,,,103.2
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/36814.jpg,equus quagga,bos taurus,0,balanced,,,91.08
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/38419.jpg,penelope purpurascens,crax rubra,0,fast,,,88.84
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/39931.jpg,agouti paca,tapirus bairdii,0,balanced,,,85.54
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/37944.jpg,nasua narica,tayassu pecari,0,balanced,,,85.36
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/40611.jpg,mazama temama,crax rubra,0,balanced,,,85.07
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/37876.jpg,eira barbara,dasyprocta punctata,0,balanced,,,84.71
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/485.jpg,macaca sp,macaca sp,1,balanced,,,84.58
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/13238.jpg,equus quagga,equus quagga,1,balanced,,,80.99
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/24933.jpg,muntiacus muntjak,empty,0,balanced,,,79.32
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/28035.jpg,panthera onca,empty,0,balanced,,,80.94
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/11761.jpg,cercopithecus mitis,francolinus nobilis,0,balanced,,,81.98
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/1169.jpg,cephalophus nigrifrons,cephalophus nigrifrons,1,balanced,,,83.25
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/28416.jpg,syncerus caffer,loxodonta africana,0,balanced,,,86.45
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/41622.jpg,dasyprocta punctata,empty,0,balanced,,,83.67
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/28725.jpg,crocuta crocuta,phacochoerus africanus,0,balanced,,,84.85
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/10383.jpg,penelope purpurascens,meleagris ocellata,0,balanced,heavy,,88.86
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/13079.jpg,acryllium vulturinum,acryllium vulturinum,1,balanced,,,83.98
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/11803.jpg,cercopithecus mitis,empty,0,balanced,,,83.84
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/40789.jpg,peromyscus sp,sciurus sp,0,balanced,,,86.21
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/36177.jpg,bos taurus,nanger granti,0,balanced,heavy,,88.25
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/38265.jpg,urocyon cinereoargenteus,tinamus major,0,balanced,,,88.0
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/2059.jpg,macaca sp,macaca sp,1,balanced,,,90.96
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/8518.jpg,leopardus pardalis,leopardus pardalis,1,balanced,,,88.93
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/1476.jpg,cricetomys gambianus,cephalophus nigrifrons,0,balanced,heavy,,56.11
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/38955.jpg,motorcycle,nasua narica,0,fast,,,101.39
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/290.jpg,acryllium vulturinum,acryllium vulturinum,1,balanced,,,107.67
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/32501.jpg,equus quagga,bos taurus,0,balanced,heavy,,85.28
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/6984.jpg,leopardus pardalis,empty,0,balanced,,,95.69
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/2629.jpg,madoqua guentheri,madoqua guentheri,1,balanced,heavy,,91.95
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/29110.jpg,madoqua guentheri,phacochoerus africanus,0,balanced,,,83.31
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/8196.jpg,motorcycle,empty,0,balanced,heavy,,86.64
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/39482.jpg,dasyprocta punctata,dasyprocta punctata,1,balanced,,,86.6
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/33503.jpg,bos taurus,bos taurus,1,balanced,,,84.0
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/935.jpg,equus quagga,equus quagga,1,balanced,,,81.39
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/2319.jpg,acryllium vulturinum,empty,0,balanced,heavy,,83.9
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/36005.jpg,bos taurus,bos taurus,1,balanced,,,90.08
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/57.jpg,crocuta crocuta,empty,0,fast,,,86.73
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/38019.jpg,puma concolor,leopardus pardalis,0,balanced,,,77.93
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/7653.jpg,panthera leo,didelphis sp,0,balanced,,,81.55
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/27769.jpg,meleagris ocellata,empty,0,balanced,heavy,,83.77
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/1073.jpg,cricetomys gambianus,cricetomys gambianus,1,balanced,,,81.24
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/11052.jpg,dasyprocta punctata,tayassu pecari,0,balanced,,,82.14
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/12850.jpg,ovis aries,equus quagga,0,balanced,,,85.16
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/3259.jpg,canis lupus,madoqua guentheri,0,balanced,heavy,,86.3
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/445.jpg,argusianus argus,argusianus argus,1,balanced,,,83.5
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/10524.jpg,crax rubra,crax rubra,1,balanced,heavy,,86.42
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/7689.jpg,panthera leo,tapirus bairdii,0,fast,,,90.57
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/31000.jpg,phacochoerus africanus,nanger granti,0,balanced,heavy,,84.42
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/25914.jpg,meleagris ocellata,meleagris ocellata,1,balanced,heavy,,84.51
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/6511.jpg,nasua narica,crax rubra,0,balanced,,,88.96
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/33004.jpg,equus grevyi,equus grevyi,1,balanced,heavy,,87.1
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9352.jpg,mazama temama,tayassu pecari,0,balanced,heavy,,91.51
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/10365.jpg,penelope purpurascens,meleagris ocellata,0,balanced,,,94.49
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9478.jpg,didelphis sp,puma concolor,0,balanced,heavy,,86.51
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/3593.jpg,francolinus nobilis,francolinus nobilis,1,balanced,,,84.5
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/31006.jpg,phacochoerus africanus,aepyceros melampus,0,balanced,heavy,,84.87
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/14120.jpg,empty,empty,1,balanced,,,84.45
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/41622.jpg,dasyprocta punctata,empty,0,balanced,,,86.49
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/33256.jpg,bos taurus,bos taurus,1,balanced,,,92.22
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9105.jpg,cuniculus paca,empty,0,balanced,,,102.92
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/27857.jpg,panthera onca,panthera onca,1,balanced,,,95.72
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/8582.jpg,puma concolor,puma concolor,1,balanced,,,84.28
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/5652.jpg,leopardus pardalis,leopardus pardalis,1,balanced,,,83.44
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/3160.jpg,crocuta crocuta,tayassu pecari,0,fast,,,83.31
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/26568.jpg,crax rubra,crax rubra,1,balanced,heavy,,57.36
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/11808.jpg,cercopithecus lhoesti,macaca sp,0,balanced,,,91.77
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/42520.jpg,dasyprocta punctata,crax rubra,0,balanced,,,96.1
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/12990.jpg,madoqua guentheri,hystrix cristata,0,balanced,,,89.47
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/53.jpg,crocuta crocuta,empty,0,balanced,,,90.77
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/42137.jpg,panthera onca,leopardus pardalis,0,balanced,heavy,,87.09
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/39229.jpg,mazama temama,mazama temama,1,balanced,,,93.47
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/26709.jpg,leopardus pardalis,empty,0,balanced,heavy,,91.34
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/28035.jpg,panthera onca,empty,0,balanced,,,86.99
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/41789.jpg,pecari tajacu,empty,0,balanced,heavy,,88.52
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9135.jpg,agouti paca,tayassu pecari,0,balanced,heavy,,89.36
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/5728.jpg,mazama temama,muntiacus muntjak,0,balanced,,,96.88
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/32379.jpg,bos taurus,nanger granti,0,balanced,heavy,,94.26
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/33190.jpg,bos taurus,empty,0,balanced,heavy,,81.53
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/40493.jpg,agouti paca,loxodonta africana,0,balanced,,,80.06
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/922.jpg,madoqua guentheri,madoqua guentheri,1,balanced,heavy,,83.1
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/11676.jpg,cephalophus nigrifrons,giraffa camelopardalis,0,balanced,,,84.52
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/7952.jpg,motorcycle,dasyprocta punctata,0,balanced,,,84.35
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/10435.jpg,crax rubra,empty,0,balanced,heavy,,82.94
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/33448.jpg,equus quagga,equus quagga,1,balanced,heavy,,87.72
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/27996.jpg,equus ferus,empty,0,balanced,heavy,,91.05
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/7247.jpg,meleagris ocellata,meleagris ocellata,1,balanced,heavy,,88.02
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/6161.jpg,nasua narica,muntiacus muntjak,0,balanced,,,92.61
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/24579.jpg,muntiacus muntjak,martes flavigula,0,balanced,heavy,,91.76
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/496.jpg,rollulus rouloul,argusianus argus,0,balanced,,,82.0
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/8892.jpg,panthera onca,giraffa camelopardalis,0,balanced,,,82.73
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/3123.jpg,capra aegagrus,bos taurus,0,balanced,,,85.76
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/27301.jpg,geotrygon montana,urocyon cinereoargenteus,0,balanced,,,95.95
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/350.jpg,acryllium vulturinum,meleagris ocellata,0,fast,,,97.57
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/31046.jpg,phacochoerus africanus,nanger granti,0,balanced,heavy,,86.37
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/11767.jpg,genetta tigrina,cricetomys gambianus,0,balanced,,,85.44
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/30016.jpg,loxodonta africana,cerdocyon thous,0,balanced,heavy,,89.23
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/36690.jpg,papio anubis,phacochoerus africanus,0,balanced,,,91.76
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/6219.jpg,agouti paca,agouti paca,1,balanced,,,60.91
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/39902.jpg,nasua narica,empty,0,fast,,,83.22
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/579.jpg,rollulus rouloul,argusianus argus,0,balanced,heavy,,163.59
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/430.jpg,argusianus argus,argusianus argus,1,balanced,heavy,,87.65
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/31254.jpg,phacochoerus africanus,oryx beisa,0,balanced,heavy,,87.24
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/3544.jpg,cephalophus nigrifrons,cephalophus nigrifrons,1,balanced,,,84.29
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/1819.jpg,hystrix brachyura,hystrix brachyura,1,balanced,,,82.3
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/13238.jpg,equus quagga,equus quagga,1,balanced,,,82.99
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/3193.jpg,bos taurus,bos taurus,1,balanced,,,85.96
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/38425.jpg,penelope purpurascens,puma concolor,0,fast,,,82.78
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/8171.jpg,puma concolor,puma concolor,1,balanced,,,82.41
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/29146.jpg,crocuta crocuta,aepyceros melampus,0,fast,,,88.91
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/25943.jpg,equus ferus,empty,0,balanced,,,88.45
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/4386.jpg,cephalophus nigrifrons,cephalophus nigrifrons,1,balanced,,,82.36
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/11336.jpg,tapirus bairdii,tapirus bairdii,1,balanced,,,79.14
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9801.jpg,dasyprocta punctata,pecari tajacu,0,balanced,,,84.87
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/8599.jpg,puma concolor,didelphis sp,0,balanced,,,91.32
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/38517.jpg,tapirus bairdii,leopardus pardalis,0,balanced,,,91.03
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/41141.jpg,crax rubra,crax rubra,1,balanced,heavy,,91.65
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9770.jpg,didelphis sp,leopardus pardalis,0,balanced,,,87.12
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/28509.jpg,giraffa camelopardalis,giraffa camelopardalis,1,balanced,heavy,,85.27
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/30434.jpg,aepyceros melampus,aepyceros melampus,1,balanced,,,87.33
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/42699.jpg,bos taurus,bos taurus,1,balanced,,,84.75
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/4343.jpg,francolinus nobilis,francolinus nobilis,1,balanced,,,84.09
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/38075.jpg,leopardus wiedii,agouti paca,0,balanced,,,87.0
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/31279.jpg,phacochoerus africanus,nanger granti,0,balanced,heavy,,85.89
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/35724.jpg,aepyceros melampus,phacochoerus africanus,0,balanced,heavy,,59.23
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/34128.jpg,acryllium vulturinum,oryx beisa,0,balanced,heavy,,106.73
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/6495.jpg,urocyon cinereoargenteus,crax rubra,0,balanced,,,111.85
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/33024.jpg,equus grevyi,empty,0,balanced,heavy,,84.99
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/10523.jpg,crax rubra,crax rubra,1,balanced,heavy,,57.71
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/819.jpg,equus grevyi,equus quagga,0,balanced,,,93.98
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/27686.jpg,meleagris ocellata,meleagris ocellata,1,balanced,heavy,,104.45
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/37810.jpg,urocyon cinereoargenteus,dasyprocta punctata,0,balanced,,,86.4
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/26341.jpg,meleagris ocellata,meleagris ocellata,1,balanced,,,81.54
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/18508.jpg,empty,empty,1,fast,,,81.17
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/33371.jpg,loxodonta africana,loxodonta africana,1,balanced,,,90.32
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/42605.jpg,mazama pandora,meleagris ocellata,0,fast,,,90.55
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/40595.jpg,geotrygon montana,francolinus nobilis,0,balanced,,,88.49
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/25943.jpg,equus ferus,empty,0,balanced,,,93.42
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/39524.jpg,nasua narica,crax rubra,0,balanced,heavy,,94.49
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/3434.jpg,madoqua guentheri,empty,0,balanced,,,62.49
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/1531.jpg,macaca sp,macaca sp,1,balanced,,,99.56
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/29330.jpg,acryllium vulturinum,empty,0,balanced,heavy,,106.01
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/26437.jpg,crax rubra,crax rubra,1,balanced,,,94.74
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/10535.jpg,crax rubra,crax rubra,1,balanced,heavy,,67.5
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/6356.jpg,urocyon cinereoargenteus,dasyprocta punctata,0,balanced,,,125.82
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/34080.jpg,phacochoerus africanus,empty,0,balanced,heavy,,84.62
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/38955.jpg,motorcycle,nasua narica,0,fast,,,61.57
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/7660.jpg,panthera leo,tapirus bairdii,0,balanced,,,141.35
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/31563.jpg,aepyceros melampus,nanger granti,0,balanced,heavy,,81.91
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/25880.jpg,puma concolor,puma concolor,1,balanced,,,84.72
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/31192.jpg,phacochoerus africanus,phacochoerus africanus,1,balanced,heavy,,88.37
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/573.jpg,macaca sp,macaca sp,1,balanced,,,60.03
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/40755.jpg,mazama pandora,empty,0,balanced,,,95.54
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/25909.jpg,equus ferus,meleagris ocellata,0,balanced,,,99.1
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/32442.jpg,bos taurus,bos taurus,1,balanced,heavy,,81.51
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/2319.jpg,acryllium vulturinum,empty,0,balanced,heavy,,79.98
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/26236.jpg,meleagris ocellata,meleagris ocellata,1,balanced,,,83.96
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/34781.jpg,papio anubis,empty,0,balanced,heavy,,86.42
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/28444.jpg,syncerus caffer,syncerus caffer,1,balanced,,,90.17
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/3818.jpg,cephalophus nigrifrons,cephalophus nigrifrons,1,balanced,heavy,,89.64
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/5389.jpg,tapirus bairdii,tapirus bairdii,1,balanced,,,90.56
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/32508.jpg,equus quagga,equus quagga,1,balanced,heavy,,91.04
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/7833.jpg,kobus ellipsiprymnus,madoqua guentheri,0,balanced,,,84.07
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/6226.jpg,agouti paca,leopardus pardalis,0,balanced,,,83.45
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/27486.jpg,puma concolor,meleagris ocellata,0,balanced,heavy,,82.99
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/35812.jpg,aepyceros melampus,empty,0,balanced,heavy,,81.18
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/430.jpg,argusianus argus,argusianus argus,1,balanced,heavy,,86.21
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/42356.jpg,panthera onca,empty,0,balanced,,,90.07
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/13748.jpg,empty,empty,1,balanced,,,68.13
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/37495.jpg,equus quagga,empty,0,fast,,,77.3
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/1335.jpg,cricetomys gambianus,cricetomys gambianus,1,balanced,,,159.09
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9855.jpg,didelphis sp,puma concolor,0,balanced,,,90.6
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/42303.jpg,didelphis sp,crax rubra,0,balanced,,,92.94
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/8724.jpg,motorcycle,meleagris ocellata,0,balanced,,,69.42
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/27818.jpg,meleagris ocellata,meleagris ocellata,1,balanced,,,102.09
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/3613.jpg,pan troglodytes,cercopithecus lhoesti,0,balanced,heavy,,140.02
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/7117.jpg,tapirus bairdii,leopardus pardalis,0,balanced,,,92.43
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/7777.jpg,lycaon pictus,madoqua guentheri,0,balanced,heavy,,130.12
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9359.jpg,mazama temama,empty,0,balanced,,,101.13
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/39725.jpg,nasua narica,nasua narica,1,balanced,heavy,,112.24
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/3938.jpg,cephalophus nigrifrons,cephalophus nigrifrons,1,balanced,,,89.42
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/9352.jpg,mazama temama,tayassu pecari,0,balanced,heavy,,92.03
+correctness_gate_v3_router,data/iwildcam_final_holdout_subset/images/2674.jpg,canis mesomelas,empty,0,balanced,,,72.31

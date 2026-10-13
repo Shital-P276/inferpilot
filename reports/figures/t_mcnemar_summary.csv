@@ -1,0 +1,4 @@
+strategy_A,strategy_B,n_paired,acc_A,acc_B,discordant_count,mode,p_value,interpretation
+correctness_gate_v3a_router,hybrid_dumb,365,0.4438,0.4356,63,chi2-cc,0.801059,not significant (no evidence of difference)
+correctness_gate_v3a_router,correctness_gate_v3_router,443,0.447,0.4266,21,exact,0.078354,not significant (no evidence of difference)
+correctness_gate_v3_router,hybrid_dumb,364,0.4423,0.4258,60,chi2-cc,0.518605,not significant (no evidence of difference)

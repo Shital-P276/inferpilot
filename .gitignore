@@ -10,6 +10,7 @@ data/raw/
 data/train/
 data/val/
 data/test/
+data/
 
 # Model checkpoints -- large binaries, back these up separately (e.g. Google
 # Drive) rather than git. Losing these would be painful, so don't rely on

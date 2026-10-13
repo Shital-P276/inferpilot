@@ -1,0 +1,12 @@
+{
+  "tier": "fast_cpu",
+  "avg_latency_ms": 9.879,
+  "p50_latency_ms": 9.51,
+  "p95_latency_ms": 13.991,
+  "cpu_memory_delta_mb": 0.0,
+  "gpu_model_footprint_mb": 0.0,
+  "gpu_peak_inference_mb": 0.0,
+  "checkpoint_size_mb": 6.64,
+  "num_params": 1704406,
+  "device": "cpu"
+}

@@ -41,10 +41,12 @@ MU_RESOURCE = 0.3
 # Static per-tier GPU peak memory (MB), from benchmark_models.py's
 # gpu_peak_inference_mb -- used as the resource_cost basis, weighted by
 # each strategy's real tier distribution.
+# Post-iWildCam migration values (re-generated from benchmark_models.py run
+# against iwildcam_* checkpoints: fast 17.22, balanced 62.92, heavy 389.88).
 TIER_GPU_MEMORY_MB = {
-    "fast": 22.47,
-    "balanced": 32.18,
-    "heavy": 34.81,
+    "fast": 17.22,
+    "balanced": 62.92,
+    "heavy": 389.88,
 }
 
 # Set to a specific ms value (e.g. from training data) to normalize latency

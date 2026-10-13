@@ -29,10 +29,10 @@ from torchvision.transforms import v2
 from prometheus_fastapi_instrumentator import Instrumentator
 from prometheus_client import Histogram, Counter
 
-from training.models.fast_cnn import FastCNN
+from training.models.iwildcam_fast_mobilenetv3small import build_fast_mobilenetv3small
 
 # ---- Config ----
-CHECKPOINT_PATH = "training/checkpoints/fast_cnn_best.pt"
+CHECKPOINT_PATH = "training/checkpoints/iwildcam_fast_mobilenetv3small_best.pt"
 IMG_SIZE = 224
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 TIER_NAME = "fast"
@@ -45,7 +45,7 @@ CLASS_NAMES = None  # populated at startup from the checkpoint
 
 eval_transform = v2.Compose([
     v2.ToImage(),
-    v2.Resize(256),
+    v2.Resize(int(IMG_SIZE * 256 / 224)),
     v2.CenterCrop(IMG_SIZE),
     v2.ToDtype(torch.float32, scale=True),
     v2.Normalize(mean=IMAGENET_MEAN, std=IMAGENET_STD),
@@ -79,11 +79,17 @@ def load_model():
     global model, CLASS_NAMES
     checkpoint = torch.load(CHECKPOINT_PATH, map_location=DEVICE)
 
-    CLASS_NAMES = checkpoint["class_names"]
+    n_classes_ckpt = checkpoint.get("num_classes", 182)
+    CLASS_NAMES = checkpoint.get("class_names",
+        [f"class_{i}" for i in range(n_classes_ckpt)])
+    if "class_names" not in checkpoint:
+        print(f"[WARNING] checkpoint has no class_names -- using placeholder "
+              f"names. Real class names should be patched into the "
+              f"checkpoint separately once available.")
     val_acc = checkpoint.get("val_acc")
     epoch = checkpoint.get("epoch")
 
-    model = FastCNN(num_classes=len(CLASS_NAMES))
+    model = build_fast_mobilenetv3small(num_classes=len(CLASS_NAMES))
     model.load_state_dict(checkpoint["model_state_dict"])
     model.to(DEVICE)
     model.eval()

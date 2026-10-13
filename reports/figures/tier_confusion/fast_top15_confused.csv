@@ -1,0 +1,16 @@
+true_id,true_name,pred_id,pred_name,count,pct_of_true_class
+32,loxodonta africana,93,camelus dromedarius,65,65.0
+36,aepyceros melampus,93,camelus dromedarius,65,65.0
+43,phacochoerus africanus,93,camelus dromedarius,57,57.0
+33,cricetomys gambianus,116,cephalophus nigrifrons,43,62.3
+95,acryllium vulturinum,0,empty,34,35.4
+39,equus ferus,0,empty,29,29.0
+48,equus quagga,93,camelus dromedarius,28,30.4
+24,bos taurus,93,camelus dromedarius,27,27.0
+43,phacochoerus africanus,0,empty,27,27.0
+87,nasua narica,0,empty,27,27.0
+3,cuniculus paca,8,leopardus pardalis,26,72.2
+24,bos taurus,0,empty,26,26.0
+52,madoqua guentheri,0,empty,26,26.0
+65,argusianus argus,0,empty,26,70.3
+48,equus quagga,0,empty,23,25.0

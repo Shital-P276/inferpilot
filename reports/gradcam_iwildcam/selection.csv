@@ -1,0 +1,22 @@
+image,role,tier,true,pred,correct,file
+413.jpg,disagree_fast-wrong_heavy-right,fast,myrmecophaga tridactyla,madoqua guentheri,0,reports/gradcam_iwildcam/fast_413.png
+25552.jpg,disagree_fast-wrong_heavy-right,fast,helarctos malayanus,argusianus argus,0,reports/gradcam_iwildcam/fast_25552.png
+24539.jpg,disagree_fast-wrong_heavy-right,fast,prionodon linsang,empty,0,reports/gradcam_iwildcam/fast_24539.png
+24542.jpg,disagree_fast-wrong_heavy-right,fast,prionodon linsang,empty,0,reports/gradcam_iwildcam/fast_24542.png
+8568.jpg,disagree_fast-wrong_heavy-right,fast,tamandua mexicana,mazama temama,0,reports/gradcam_iwildcam/fast_8568.png
+13025.jpg,agree_all-correct,fast,syncerus caffer,syncerus caffer,1,reports/gradcam_iwildcam/fast_13025.png
+34130.jpg,agree_all-wrong,fast,acryllium vulturinum,empty,0,reports/gradcam_iwildcam/fast_34130.png
+413.jpg,disagree_fast-wrong_heavy-right,balanced,myrmecophaga tridactyla,papio anubis,0,reports/gradcam_iwildcam/balanced_413.png
+25552.jpg,disagree_fast-wrong_heavy-right,balanced,helarctos malayanus,paguma larvata,0,reports/gradcam_iwildcam/balanced_25552.png
+24539.jpg,disagree_fast-wrong_heavy-right,balanced,prionodon linsang,empty,0,reports/gradcam_iwildcam/balanced_24539.png
+24542.jpg,disagree_fast-wrong_heavy-right,balanced,prionodon linsang,empty,0,reports/gradcam_iwildcam/balanced_24542.png
+8568.jpg,disagree_fast-wrong_heavy-right,balanced,tamandua mexicana,macaca sp,0,reports/gradcam_iwildcam/balanced_8568.png
+13025.jpg,agree_all-correct,balanced,syncerus caffer,syncerus caffer,1,reports/gradcam_iwildcam/balanced_13025.png
+34130.jpg,agree_all-wrong,balanced,acryllium vulturinum,bos taurus,0,reports/gradcam_iwildcam/balanced_34130.png
+413.jpg,disagree_fast-wrong_heavy-right,heavy,myrmecophaga tridactyla,myrmecophaga tridactyla,1,reports/gradcam_iwildcam/heavy_413.png
+25552.jpg,disagree_fast-wrong_heavy-right,heavy,helarctos malayanus,helarctos malayanus,1,reports/gradcam_iwildcam/heavy_25552.png
+24539.jpg,disagree_fast-wrong_heavy-right,heavy,prionodon linsang,prionodon linsang,1,reports/gradcam_iwildcam/heavy_24539.png
+24542.jpg,disagree_fast-wrong_heavy-right,heavy,prionodon linsang,prionodon linsang,1,reports/gradcam_iwildcam/heavy_24542.png
+8568.jpg,disagree_fast-wrong_heavy-right,heavy,tamandua mexicana,tamandua mexicana,1,reports/gradcam_iwildcam/heavy_8568.png
+13025.jpg,agree_all-correct,heavy,syncerus caffer,syncerus caffer,1,reports/gradcam_iwildcam/heavy_13025.png
+34130.jpg,agree_all-wrong,heavy,acryllium vulturinum,aepyceros melampus,0,reports/gradcam_iwildcam/heavy_34130.png

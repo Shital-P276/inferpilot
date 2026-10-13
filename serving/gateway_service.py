@@ -30,15 +30,58 @@ import numpy as np
 import pandas as pd
 import httpx
 import torch
-from torchvision import transforms
 from torchvision.transforms import v2
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from PIL import Image
 from prometheus_fastapi_instrumentator import Instrumentator
 from prometheus_client import Counter, Histogram
 
-from training.models.fast_cnn import FastCNN
-from training.models.correctness_gate import CorrectnessGateNet, CorrectnessGateNetV2b
+from training.models.correctness_gate import CorrectnessGateNet, CorrectnessGateNetV2b, CorrectnessGateNetV3
+
+from serving.resilience import (
+    BREAKERS,
+    BULKHEAD,
+    FALLBACKS,
+    TierUnavailable,
+    breaker_snapshot,
+    fallback_chain,
+    maybe_inject_fault,
+    FAULT_TIER,
+    FAULT_RATE,
+)
+
+
+async def call_tier(tier: str, image_bytes: bytes, filename, content_type):
+    """Single guarded call to a tier service: breaker + bulkhead + fault
+    injection. Returns (result_json, elapsed_ms). Raises TierUnavailable when
+    the tier is breaker-blocked, saturated, fault-injected, erroring, or
+    unreachable -- every such outcome also records a breaker failure so chaos
+    traces trip the breaker realistically."""
+    if not BREAKERS[tier].allow_request():
+        raise TierUnavailable(f"breaker {BREAKERS[tier].state} for tier={tier}")
+    async with BULKHEAD.slot(tier):
+        try:
+            maybe_inject_fault(tier)
+        except TierUnavailable:
+            BREAKERS[tier].record_failure()
+            raise
+        t0 = time.perf_counter()
+        try:
+            async with httpx.AsyncClient() as client:
+                resp = await client.post(
+                    f"{SERVICE_URLS[tier]}/predict",
+                    files={"file": (filename, image_bytes, content_type)},
+                    timeout=10.0,
+                )
+        except Exception as exc:
+            BREAKERS[tier].record_failure()
+            raise TierUnavailable(f"tier={tier} unreachable: {type(exc).__name__}") from exc
+        elapsed_ms = round((time.perf_counter() - t0) * 1000, 3)
+        if resp.status_code != 200:
+            BREAKERS[tier].record_failure()
+            raise TierUnavailable(f"tier={tier} returned {resp.status_code}")
+        BREAKERS[tier].record_success()
+        return resp.json(), elapsed_ms
 
 # ---- CONFIG -----------------------------------------------------------
 ROUTER_MODEL_PATH = "router/router_best_model.pkl"
@@ -55,11 +98,37 @@ SINGLESHOT_ROUTER_MODEL_PATH = "router/router_singleshot_model.pkl"
 # V1 (CorrectnessGateNet, correctness_gate_best.pt) is retained in the repo
 # as the legacy baseline for comparison -- not loaded in production.
 CORRECTNESS_GATE_CHECKPOINT_PATH = "training/checkpoints/correctness_gate_v2b_best.pt"
+# CorrectnessGateNetV3: same backbone with last block unfrozen + dual heads
+# (correctness + confidence auxiliary, 0.7724 avg AUROC). Loaded alongside V2b
+# — additive, not a replacement; V2b kept as fallback/comparison.
+CORRECTNESS_GATE_V3_CHECKPOINT_PATH = "training/checkpoints/correctness_gate_v3_best.pt"
+# CorrectnessGateNetV3a: ablation winner (unfrozen backbone + single correctness
+# head, 0.7810 test avg AUROC vs V3's 0.7724). Same V3 architecture with
+# dual_head=False -- forward returns one [3] tensor, no tuple unpack.
+# Checkpoint dict is {"model_state_dict","val_avg_auroc","flags"} (no
+# class_names); loader uses .get() so this is fine. Additive, like V3.
+CORRECTNESS_GATE_V3A_CHECKPOINT_PATH = "training/checkpoints/correctness_gate_v3a_best.pt"
+# TODO: CORRECTNESS_GATE_LAMBDA = 0.20 was tuned against the OLD cost landscape
+# (0.480-0.986, ~2x range). The new iWildCam landscape is 0.0367-1.0 (~27x range)
+# after recomputing from router/model_benchmarks.json. 0.20 has NOT been
+# re-validated against the new costs and likely needs re-sweeping (lambda
+# sweep over correctness_gate with new costs) before trusting
+# hybrid_gate/correctness_gate_router behavior under the new architecture.
 CORRECTNESS_GATE_LAMBDA = 0.20
-CORRECTNESS_GATE_COSTS = {"fast": 0.480, "balanced": 0.947, "heavy": 0.986}
+# Recomputed from new router/model_benchmarks.json using the same
+# 0.7*gpu_ratio + 0.3*param_ratio formula as
+# training/train_correctness_gate.py::load_resource_norm()
+# (old values were {"fast": 0.480, "balanced": 0.947, "heavy": 0.986}).
+CORRECTNESS_GATE_COSTS = {"fast": 0.0367, "balanced": 0.1515, "heavy": 1.0000}
 CORRECTNESS_GATE_TIERS = ["fast", "balanced", "heavy"]
+# Device for CorrectnessGateNetV2b: "cuda" (default, same as before) or "cpu".
+# CPU mode frees GPU cycles for Balanced/Heavy inference under concurrent load.
+# k6 load test (Aug 2026): CPU matches GPU latency (p50 ~611ms) while improving
+# throughput (13.4 -> 14.0 req/s) and reducing GPU contention (75.7% -> 57.3%).
+CORRECTNESS_GATE_DEVICE = torch.device(os.environ.get("CORRECTNESS_GATE_DEVICE", "cpu"))
 
 SERVICE_URLS = {
+    "fast": "http://fast:8001",
     "balanced": "http://balanced:8002",
     "heavy": "http://heavy:8003",
 }
@@ -73,34 +142,7 @@ SERVICE_URLS = {
 # applied AFTER Heavy's real HTTP response is received, only delaying the reply.
 # Env override (e.g. SIMULATED_HEAVY_DELAY_MS=0 to disable) allows re-tests
 # without a rebuild.
-SIMULATED_HEAVY_DELAY_MS = int(os.environ.get("SIMULATED_HEAVY_DELAY_MS", "2500"))
-
-FAST_CHECKPOINT_PATH = "training/checkpoints/fast_cnn_best.pt"
-FAST_NUM_CLASSES = 28
-FAST_DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-FAST_CLASS_NAMES = [
-    "Apple__Healthy", "Apple__Rotten",
-    "Banana__Healthy", "Banana__Rotten",
-    "Bellpepper__Healthy", "Bellpepper__Rotten",
-    "Carrot__Healthy", "Carrot__Rotten",
-    "Cucumber__Healthy", "Cucumber__Rotten",
-    "Grape__Healthy", "Grape__Rotten",
-    "Guava__Healthy", "Guava__Rotten",
-    "Jujube__Healthy", "Jujube__Rotten",
-    "Mango__Healthy", "Mango__Rotten",
-    "Orange__Healthy", "Orange__Rotten",
-    "Pomegranate__Healthy", "Pomegranate__Rotten",
-    "Potato__Healthy", "Potato__Rotten",
-    "Strawberry__Healthy", "Strawberry__Rotten",
-    "Tomato__Healthy", "Tomato__Rotten",
-]
-
-_fast_preprocess = transforms.Compose([
-    transforms.Resize((224, 224)),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-])
+SIMULATED_HEAVY_DELAY_MS = int(os.environ.get("SIMULATED_HEAVY_DELAY_MS", "0"))
 
 # Same eval-time pipeline as train_correctness_gate.py (ToImage -> Resize(256)
 # -> CenterCrop(224) -> ToDtype(scale) -> ImageNet Normalize).
@@ -112,15 +154,13 @@ _correctness_gate_preprocess = v2.Compose([
     v2.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
 ])
 
-_fast_model = None
-
 LOAD_STAGE_THRESHOLDS = {
     "light": (0, 10),
     "heavy": (10, 40),
     "burst": (40, float("inf")),
 }
 
-VALID_STRATEGIES = {"ml_router", "always_fast", "always_heavy", "round_robin", "rule_based", "single_shot_router", "correctness_gate_router"}
+VALID_STRATEGIES = {"ml_router", "always_fast", "always_heavy", "round_robin", "rule_based", "single_shot_router", "correctness_gate_router", "correctness_gate_v3_router", "correctness_gate_v3a_router", "hybrid_gate", "hybrid_dumb"}
 
 RULE_BASED_CONFIDENCE_THRESHOLD = 0.7
 RULE_BASED_ESCALATE_TO = "heavy"
@@ -148,53 +188,6 @@ GATEWAY_LATENCY = Histogram(
     buckets=[10, 25, 50, 75, 100, 150, 200, 300, 500, 750, 1000, 1500, 2000, 3000, 5000,
              7500, 10000, 15000, 20000, 30000]
 )
-
-
-@app.on_event("startup")
-def load_fast_model_on_startup():
-    global _fast_model
-
-    if not Path(FAST_CHECKPOINT_PATH).exists():
-        raise RuntimeError(f"Fast checkpoint not found at {FAST_CHECKPOINT_PATH}")
-    if len(FAST_CLASS_NAMES) != FAST_NUM_CLASSES:
-        raise RuntimeError(
-            f"FAST_CLASS_NAMES has {len(FAST_CLASS_NAMES)} entries but "
-            f"FAST_NUM_CLASSES={FAST_NUM_CLASSES}. Fix the mismatch."
-        )
-
-    model = FastCNN(num_classes=FAST_NUM_CLASSES)
-    checkpoint = torch.load(FAST_CHECKPOINT_PATH, map_location=FAST_DEVICE)
-    state_dict = checkpoint.get("model_state_dict", checkpoint) if isinstance(checkpoint, dict) else checkpoint
-    model.load_state_dict(state_dict)
-    model.to(FAST_DEVICE)
-    model.eval()
-
-    _fast_model = model
-    print(f"[gateway] Fast model loaded in-process on {FAST_DEVICE}")
-
-
-def run_fast_inference(image_bytes: bytes) -> dict:
-    if _fast_model is None:
-        raise HTTPException(status_code=503, detail="Fast model not loaded yet")
-
-    image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
-    input_tensor = _fast_preprocess(image).unsqueeze(0).to(FAST_DEVICE)
-
-    start = time.perf_counter()
-    with torch.no_grad():
-        logits = _fast_model(input_tensor)
-        probs = torch.softmax(logits, dim=1)
-        confidence, predicted_idx = torch.max(probs, dim=1)
-    if FAST_DEVICE.type == "cuda":
-        torch.cuda.synchronize()
-    latency_ms = (time.perf_counter() - start) * 1000
-
-    return {
-        "tier": "fast",
-        "predicted_class": FAST_CLASS_NAMES[predicted_idx.item()],
-        "confidence": round(confidence.item(), 4),
-        "latency_ms": round(latency_ms, 3),
-    }
 
 _concurrent_lock = threading.Lock()
 _concurrent_requests = 0
@@ -258,16 +251,47 @@ if "fast_confidence" in singleshot_feature_cols:
 # MobileNetV3-Small backbone + 24K-param trainable head). Predicts P(correct)
 # per tier directly from raw image pixels. V1 (CorrectnessGateNet) is retained
 # in correctness_gate.py as legacy baseline, not loaded here.
+# CORRECTNESS_GATE_DEVICE env var controls GPU vs CPU placement.
 if not Path(CORRECTNESS_GATE_CHECKPOINT_PATH).exists():
     raise RuntimeError(f"CorrectnessGateNetV2b checkpoint not found at {CORRECTNESS_GATE_CHECKPOINT_PATH}")
 
-_gate_checkpoint = torch.load(CORRECTNESS_GATE_CHECKPOINT_PATH, map_location=FAST_DEVICE)
+_gate_checkpoint = torch.load(CORRECTNESS_GATE_CHECKPOINT_PATH, map_location=CORRECTNESS_GATE_DEVICE)
 _gate_state_dict = _gate_checkpoint.get("model_state_dict", _gate_checkpoint) if isinstance(_gate_checkpoint, dict) else _gate_checkpoint
 correctness_gate_model = CorrectnessGateNetV2b(num_tiers=3)
 correctness_gate_model.load_state_dict(_gate_state_dict)
-correctness_gate_model.to(FAST_DEVICE)
+correctness_gate_model.to(CORRECTNESS_GATE_DEVICE)
 correctness_gate_model.eval()
-print(f"[gateway] CorrectnessGateNetV2b loaded in-process on {FAST_DEVICE}")
+print(f"[gateway] CorrectnessGateNetV2b loaded on {CORRECTNESS_GATE_DEVICE}")
+
+# ---- Load CorrectnessGateNetV3 alongside V2b (additive, not replacement)
+# Same CPU-inside-gateway design rule as V2b (CORRECTNESS_GATE_DEVICE=cpu by default).
+# V3 uses correctness_head for routing only; confidence_head is auxiliary/training-only
+# per diagnose_v3_confidence_head.py (not reliable for decisions) — ignored here.
+if not Path(CORRECTNESS_GATE_V3_CHECKPOINT_PATH).exists():
+    raise RuntimeError(f"CorrectnessGateNetV3 checkpoint not found at {CORRECTNESS_GATE_V3_CHECKPOINT_PATH}")
+
+_gate_v3_checkpoint = torch.load(CORRECTNESS_GATE_V3_CHECKPOINT_PATH, map_location=CORRECTNESS_GATE_DEVICE)
+_gate_v3_state_dict = _gate_v3_checkpoint.get("model_state_dict", _gate_v3_checkpoint) if isinstance(_gate_v3_checkpoint, dict) else _gate_v3_checkpoint
+correctness_gate_v3_model = CorrectnessGateNetV3(num_tiers=3)
+correctness_gate_v3_model.load_state_dict(_gate_v3_state_dict)
+correctness_gate_v3_model.to(CORRECTNESS_GATE_DEVICE)
+correctness_gate_v3_model.eval()
+print(f"[gateway] CorrectnessGateNetV3 loaded on {CORRECTNESS_GATE_DEVICE}")
+
+# ---- Load CorrectnessGateNetV3a alongside V3 (additive, not replacement)
+# Ablation winner: unfrozen last backbone block + SINGLE correctness head
+# (no confidence_head at all -- dual_head=False, so forward returns one [3]
+# tensor, not a tuple). Same CPU placement, lambda, and costs as V2b/V3.
+if not Path(CORRECTNESS_GATE_V3A_CHECKPOINT_PATH).exists():
+    raise RuntimeError(f"CorrectnessGateNetV3a checkpoint not found at {CORRECTNESS_GATE_V3A_CHECKPOINT_PATH}")
+
+_gate_v3a_checkpoint = torch.load(CORRECTNESS_GATE_V3A_CHECKPOINT_PATH, map_location=CORRECTNESS_GATE_DEVICE)
+_gate_v3a_state_dict = _gate_v3a_checkpoint.get("model_state_dict", _gate_v3a_checkpoint) if isinstance(_gate_v3a_checkpoint, dict) else _gate_v3a_checkpoint
+correctness_gate_v3a_model = CorrectnessGateNetV3(num_tiers=3, unfreeze_last_block=True, dual_head=False)
+correctness_gate_v3a_model.load_state_dict(_gate_v3a_state_dict)
+correctness_gate_v3a_model.to(CORRECTNESS_GATE_DEVICE)
+correctness_gate_v3a_model.eval()
+print(f"[gateway] CorrectnessGateNetV3a loaded on {CORRECTNESS_GATE_DEVICE}")
 
 
 def extract_request_features(image_bytes: bytes, file_size_kb: float):
@@ -333,7 +357,7 @@ def route_correctness_gate(image_bytes: bytes) -> str:
         raise HTTPException(status_code=503, detail="CorrectnessGateNet not loaded yet")
 
     image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
-    input_tensor = _correctness_gate_preprocess(image).unsqueeze(0).to(FAST_DEVICE)
+    input_tensor = _correctness_gate_preprocess(image).unsqueeze(0).to(CORRECTNESS_GATE_DEVICE)
 
     with torch.no_grad():
         tier_correctness = correctness_gate_model(input_tensor)[0]  # [3] -> (fast, balanced, heavy)
@@ -346,9 +370,99 @@ def route_correctness_gate(image_bytes: bytes) -> str:
     return chosen_tier
 
 
+def route_correctness_gate_v3(image_bytes: bytes) -> str:
+    """CorrectnessGateNetV3 single-shot routing (correctness_head only).
+
+    Same pattern as route_correctness_gate (V2b) — preprocess + forward,
+    argmax over (P_correct - LAMBDA*cost). V3's confidence_head is ignored
+    entirely for routing (auxiliary-training-only per diagnose_v3_confidence_head.py).
+    Uses same CORRECTNESS_GATE_LAMBDA/costs and CPU placement as V2b.
+    """
+    if correctness_gate_v3_model is None:
+        raise HTTPException(status_code=503, detail="CorrectnessGateNetV3 not loaded yet")
+
+    image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+    input_tensor = _correctness_gate_preprocess(image).unsqueeze(0).to(CORRECTNESS_GATE_DEVICE)
+
+    with torch.no_grad():
+        tier_correctness, _ = correctness_gate_v3_model(input_tensor)  # ignore confidence_head
+        tier_correctness = tier_correctness[0]  # [3] -> (fast, balanced, heavy)
+
+    scores = [
+        tier_correctness[i].item() - CORRECTNESS_GATE_LAMBDA * CORRECTNESS_GATE_COSTS[tier]
+        for i, tier in enumerate(CORRECTNESS_GATE_TIERS)
+    ]
+    chosen_tier = CORRECTNESS_GATE_TIERS[int(max(range(len(scores)), key=scores.__getitem__))]
+    return chosen_tier
+
+
+def route_correctness_gate_v3a(image_bytes: bytes) -> str:
+    """CorrectnessGateNetV3a single-shot routing (ablation winner).
+
+    Same pattern as route_correctness_gate_v3, but the model has NO
+    confidence_head (dual_head=False), so forward returns a single [3]
+    correctness tensor -- no tuple unpack. Same CORRECTNESS_GATE_LAMBDA,
+    costs, and CPU placement as V2b/V3.
+    """
+    if correctness_gate_v3a_model is None:
+        raise HTTPException(status_code=503, detail="CorrectnessGateNetV3a not loaded yet")
+
+    image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+    input_tensor = _correctness_gate_preprocess(image).unsqueeze(0).to(CORRECTNESS_GATE_DEVICE)
+
+    with torch.no_grad():
+        tier_correctness = correctness_gate_v3a_model(input_tensor)[0]  # [3] -> (fast, balanced, heavy)
+
+    scores = [
+        tier_correctness[i].item() - CORRECTNESS_GATE_LAMBDA * CORRECTNESS_GATE_COSTS[tier]
+        for i, tier in enumerate(CORRECTNESS_GATE_TIERS)
+    ]
+    chosen_tier = CORRECTNESS_GATE_TIERS[int(max(range(len(scores)), key=scores.__getitem__))]
+    return chosen_tier
+
+
+def route_hybrid_gate(image_bytes: bytes, fast_confidence: float) -> str:
+    """Hybrid routing: rule_based default, correctness_gate overrides in uncertain band.
+
+    If fast_confidence is OUTSIDE [0.60, 0.80]: use rule_based logic unchanged
+    (Fast if >= 0.7, Heavy if < 0.7).
+    If fast_confidence is INSIDE [0.60, 0.80]: delegate to correctness_gate
+    (V2b model) for this request, overriding rule_based.
+    """
+    if fast_confidence < 0.60 or fast_confidence > 0.80:
+        # Outside uncertain band — rule_based decision
+        if fast_confidence < RULE_BASED_CONFIDENCE_THRESHOLD:
+            return RULE_BASED_ESCALATE_TO
+        return "fast"
+    else:
+        # Inside uncertain band — let correctness gate decide
+        return route_correctness_gate(image_bytes)
+
+
+def route_hybrid_dumb(image_bytes: bytes, fast_confidence: float) -> str:
+    """Scientific control for hybrid_gate: same trigger, dumb escalation.
+
+    Uses the EXACT SAME confidence band check as hybrid_gate ([0.60, 0.80]).
+    Outside the band: rule_based logic unchanged (identical to hybrid_gate).
+    Inside the band: deterministic "heavy" -- no model call, no per-image
+    intelligence. Isolates whether hybrid_gate's gain comes from genuine
+    per-image routing intelligence or merely from escalating uncertain cases.
+    """
+    if fast_confidence < 0.60 or fast_confidence > 0.80:
+        # Outside uncertain band — rule_based decision (same as hybrid_gate)
+        if fast_confidence < RULE_BASED_CONFIDENCE_THRESHOLD:
+            return RULE_BASED_ESCALATE_TO
+        return "fast"
+    else:
+        # Inside uncertain band — dumb escalation (no model call)
+        return "heavy"
+
+
 @app.get("/health")
 def health():
-    return {"status": "ok", "concurrent_requests": _concurrent_requests}
+    return {"status": "ok", "concurrent_requests": _concurrent_requests,
+            "breakers": breaker_snapshot(),
+            "fault_injection": {"tier": FAULT_TIER, "rate": FAULT_RATE}}
 
 
 @app.post("/route")
@@ -378,34 +492,53 @@ async def route(file: UploadFile = File(...), strategy: str = "ml_router"):
         # point (one hop, no cascade). Only ml_router/rule_based (cascade
         # strategies) and always_fast (needs the actual Fast answer) trigger
         # the Fast call.
-        NEEDS_FAST_CONFIDENCE = {"ml_router", "rule_based"}
+        NEEDS_FAST_CONFIDENCE = {"ml_router", "rule_based", "hybrid_gate", "hybrid_dumb"}
 
         fast_result = None
         fast_confidence = None
+        degraded_routing = None  # set when Fast is down and a cascade strategy degrades
+        active_strategy = strategy  # dispatch chain uses this; may degrade below
 
         if strategy in NEEDS_FAST_CONFIDENCE or strategy == "always_fast":
             t0 = time.perf_counter()
-            fast_result = run_fast_inference(image_bytes)
-            timings_ms["fast_call_ms"] = round((time.perf_counter() - t0) * 1000, 3)
-            fast_confidence = fast_result["confidence"]
+            try:
+                fast_result, fast_ms = await call_tier(
+                    "fast", image_bytes, file.filename, file.content_type)
+                timings_ms["fast_call_ms"] = fast_ms
+            except TierUnavailable as exc:
+                timings_ms["fast_call_ms"] = round((time.perf_counter() - t0) * 1000, 3)
+                timings_ms["fast_unavailable_reason"] = str(exc)
+                if strategy == "always_fast":
+                    # Fast is terminal in the fallback chain -- nothing to substitute.
+                    raise HTTPException(status_code=503, detail="Fast tier unavailable")
+                # Degraded mode: cascade strategies need fast_confidence, which
+                # does not exist when Fast is down. The correctness gate needs
+                # no Fast call, so it is the natural degraded-mode router.
+                # active_strategy drives the dispatch chain below; `strategy`
+                # keeps the requested value for metrics/response honesty.
+                degraded_routing = strategy
+                active_strategy = "correctness_gate_router"
+            else:
+                fast_confidence = fast_result["confidence"]
+                active_strategy = strategy
 
-        if strategy == "ml_router":
+        if active_strategy == "ml_router":
             t0 = time.perf_counter()
             feature_row = build_feature_row(request_features, fast_confidence, load_stage)
             predicted_label = router_model.predict(feature_row)[0]
             chosen_tier = label_encoder.inverse_transform([predicted_label])[0]
             timings_ms["router_predict_ms"] = round((time.perf_counter() - t0) * 1000, 3)
 
-        elif strategy == "always_fast":
+        elif active_strategy == "always_fast":
             chosen_tier = "fast"
 
-        elif strategy == "always_heavy":
+        elif active_strategy == "always_heavy":
             chosen_tier = "heavy"
 
-        elif strategy == "round_robin":
+        elif active_strategy == "round_robin":
             chosen_tier = next_round_robin_tier()
 
-        elif strategy == "rule_based":
+        elif active_strategy == "rule_based":
             t0 = time.perf_counter()
             if fast_confidence < RULE_BASED_CONFIDENCE_THRESHOLD:
                 chosen_tier = RULE_BASED_ESCALATE_TO
@@ -413,7 +546,7 @@ async def route(file: UploadFile = File(...), strategy: str = "ml_router"):
                 chosen_tier = "fast"
             timings_ms["rule_decision_ms"] = round((time.perf_counter() - t0) * 1000, 3)
 
-        elif strategy == "single_shot_router":
+        elif active_strategy == "single_shot_router":
             # Path A: predict tier directly from request features alone --
             # no Fast pre-call, exactly one network hop downstream (to
             # whichever tier gets picked). fast_result/fast_confidence stay
@@ -424,7 +557,7 @@ async def route(file: UploadFile = File(...), strategy: str = "ml_router"):
             chosen_tier = singleshot_label_encoder.inverse_transform([predicted_label])[0]
             timings_ms["router_predict_ms"] = round((time.perf_counter() - t0) * 1000, 3)
 
-        elif strategy == "correctness_gate_router":
+        elif active_strategy == "correctness_gate_router":
             # Path B single-shot: one CNN forward pass on the raw image (no
             # Fast pre-call, no hand-engineered feature row). Picks the tier
             # maximizing (P_correct_tier - LAMBDA*cost_tier).
@@ -432,27 +565,69 @@ async def route(file: UploadFile = File(...), strategy: str = "ml_router"):
             chosen_tier = route_correctness_gate(image_bytes)
             timings_ms["router_predict_ms"] = round((time.perf_counter() - t0) * 1000, 3)
 
+        elif active_strategy == "correctness_gate_v3_router":
+            # Path B V3 single-shot: same pattern as V2b but using V3's
+            # correctness_head only (confidence_head ignored per diagnostic).
+            t0 = time.perf_counter()
+            chosen_tier = route_correctness_gate_v3(image_bytes)
+            timings_ms["router_predict_ms"] = round((time.perf_counter() - t0) * 1000, 3)
+
+        elif active_strategy == "correctness_gate_v3a_router":
+            # Path B V3a single-shot: ablation winner (unfrozen + single head).
+            # Same pattern as V3; model has no confidence_head so no unpack.
+            t0 = time.perf_counter()
+            chosen_tier = route_correctness_gate_v3a(image_bytes)
+            timings_ms["router_predict_ms"] = round((time.perf_counter() - t0) * 1000, 3)
+
+        elif active_strategy == "hybrid_gate":
+            # Hybrid: rule_based default, correctness gate overrides in
+            # uncertain band [0.60, 0.80] around rule_based's 0.7 threshold.
+            # Needs fast_confidence (already computed above via NEEDS_FAST_CONFIDENCE).
+            t0 = time.perf_counter()
+            chosen_tier = route_hybrid_gate(image_bytes, fast_confidence)
+            timings_ms["hybrid_decision_ms"] = round((time.perf_counter() - t0) * 1000, 3)
+
+        elif active_strategy == "hybrid_dumb":
+            # Scientific control: same trigger as hybrid_gate (band [0.60, 0.80]),
+            # but deterministic "heavy" escalation instead of correctness gate.
+            t0 = time.perf_counter()
+            chosen_tier = route_hybrid_dumb(image_bytes, fast_confidence)
+            timings_ms["hybrid_decision_ms"] = round((time.perf_counter() - t0) * 1000, 3)
+
         ROUTING_DECISIONS.labels(tier=chosen_tier, strategy=strategy).inc()
 
+        # Dispatch with fallback substitution: try the chosen tier, then walk
+        # FALLBACK_ORDER (heavy -> balanced -> fast) on TierUnavailable. The
+        # fast_result reuse only applies when fast was actually reached above.
+        fallback_from = None
         if chosen_tier == "fast" and fast_result is not None:
+            # Already called Fast for confidence above; reuse that result.
             final_result = fast_result
             timings_ms["escalated_call_ms"] = 0.0
-        elif chosen_tier == "fast":
-            t0 = time.perf_counter()
-            final_result = run_fast_inference(image_bytes)
-            timings_ms["escalated_call_ms"] = round((time.perf_counter() - t0) * 1000, 3)
         else:
-            t0 = time.perf_counter()
-            async with httpx.AsyncClient() as client:
-                final_resp = await client.post(
-                    f"{SERVICE_URLS[chosen_tier]}/predict",
-                    files={"file": (file.filename, image_bytes, file.content_type)},
-                    timeout=10.0,
-                )
-            timings_ms["escalated_call_ms"] = round((time.perf_counter() - t0) * 1000, 3)
-            if final_resp.status_code != 200:
-                raise HTTPException(status_code=502, detail=f"{chosen_tier} tier unavailable")
-            final_result = final_resp.json()
+            final_result = None
+            last_reason = ""
+            for attempt_tier in [chosen_tier] + fallback_chain(chosen_tier):
+                t0 = time.perf_counter()
+                try:
+                    final_result, call_ms = await call_tier(
+                        attempt_tier, image_bytes, file.filename, file.content_type)
+                except TierUnavailable as exc:
+                    last_reason = str(exc)
+                    timings_ms[f"dispatch_{attempt_tier}_failed"] = str(exc)
+                    continue
+                timings_ms["escalated_call_ms"] = call_ms
+                if attempt_tier != chosen_tier:
+                    fallback_from = chosen_tier
+                    chosen_tier = attempt_tier
+                    FALLBACKS.labels(from_tier=fallback_from, to_tier=attempt_tier,
+                                     strategy=strategy).inc()
+                break
+            if final_result is None:
+                raise HTTPException(
+                    status_code=503,
+                    detail=f"{chosen_tier} tier unavailable and no fallback left "
+                           f"(last: {last_reason})")
 
             # Simulated cloud-vision latency for Heavy ONLY: real prediction is
             # already in final_result, so accuracy is untouched -- this only delays
@@ -474,6 +649,8 @@ async def route(file: UploadFile = File(...), strategy: str = "ml_router"):
             "estimated_load_stage": load_stage,
             "gateway_latency_ms": round(elapsed_ms, 2),
             "timings_ms": timings_ms,
+            "fallback_from": fallback_from,
+            "degraded_routing": degraded_routing,
         }
 
     finally:

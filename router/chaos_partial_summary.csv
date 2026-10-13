@@ -1,0 +1,5 @@
+strategy,concurrency_phase,n_requests,n_errors,n_fallbacks,accuracy,avg_latency_ms,p95_latency_ms,throughput_rps,pct_fast,pct_balanced,pct_heavy
+correctness_gate_v3_router,light,186,0,19,0.4194,93.36,132.39,6.2,3.8,72.6,23.7
+correctness_gate_v3_router,heavy,209,0,50,0.378,86.03,104.08,6.97,6.2,85.6,8.1
+correctness_gate_v3_router,burst,204,0,67,0.348,88.43,107.53,6.8,6.9,93.1,0.0
+correctness_gate_v3_router,overall,599,0,136,0.3806,89.12,109.12,19.97,5.7,84.1,10.2

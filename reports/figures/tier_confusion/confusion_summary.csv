@@ -1,0 +1,4 @@
+tier,n,accuracy,offdiag_pairs,zero_diag_classes
+fast,3556,0.23,536,140
+balanced,3556,0.3428,579,133
+heavy,3556,0.5245,442,111

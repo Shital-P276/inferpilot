@@ -1,0 +1,5 @@
+backbone,heads,cell,fast,balanced,heavy,avg
+frozen,single,v2b,0.7589,0.744,0.7376,0.7469
+frozen,dual,v3b,0.7525,0.7512,0.7447,0.7495
+unfrozen,single,v3a,0.779,0.7932,0.7709,0.781
+unfrozen,dual,v3,0.7784,0.7803,0.7585,0.7724

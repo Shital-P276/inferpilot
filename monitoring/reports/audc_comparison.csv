@@ -1,0 +1,5 @@
+model,audc_raw,audc_normalized,best_naive_acc,best_naive_lambda,best_naive_sigma,best_defensible_acc,best_defensible_lambda,best_defensible_sigma,sweep_lambda_min,sweep_lambda_max,note
+CorrectnessGateNet_V1,0.088036,7.3363,0.9917,0.05,,0.95,0.15,4.5967,0.05,0.95,"swept curve, trapezoidal AUDC"
+CorrectnessGateNetV2b,0.083681,6.9734,0.9818,0.05,2.2646,0.9686,0.17,4.23,0.05,0.95,"swept curve, trapezoidal AUDC"
+rule_based,,,0.972,,,0.972,,,,,"single operating point, not swept"
+ml_router,,,0.972,,,0.972,,,,,"single operating point, not swept"

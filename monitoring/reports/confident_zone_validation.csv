@@ -1,0 +1,15 @@
+metric,value,true_label,fast_confidence,rb_predicted,gate_predicted
+confident_zone_images,215,,,,
+uncertain_zone_images,35,,,,
+band_low,0.6,,,,
+band_high,0.8,,,,
+both_right,204,,,,
+both_wrong,1,,,,
+rb_right_gate_wrong,9,,,,
+rb_wrong_gate_right,1,,,,
+gate_wins_image,data/test/Tomato__Healthy/freshTomato (142).jpg,Tomato__Healthy,0.3811,Jujube__Healthy,Tomato__Healthy
+rule_based_accuracy_confident_zone,0.9907,,,,
+gate_accuracy_confident_zone,0.9535,,,,
+accuracy_difference,-0.0372,,,,
+rule_based_accuracy_full,0.98,,,,
+gate_accuracy_full,0.96,,,,

@@ -1,0 +1,16 @@
+true_id,true_name,pred_id,pred_name,count,pct_of_true_class
+43,phacochoerus africanus,36,aepyceros melampus,46,46.0
+89,didelphis sp,8,leopardus pardalis,39,46.4
+20,leopardus wiedii,8,leopardus pardalis,37,71.2
+148,agouti paca,8,leopardus pardalis,36,36.0
+95,acryllium vulturinum,52,madoqua guentheri,28,29.2
+32,loxodonta africana,36,aepyceros melampus,23,23.0
+2,dasyprocta punctata,146,meleagris ocellata,22,22.0
+39,equus ferus,87,nasua narica,22,22.0
+172,motorcycle,0,empty,22,36.7
+61,oryx beisa,36,aepyceros melampus,20,76.9
+52,madoqua guentheri,0,empty,19,19.0
+145,urocyon cinereoargenteus,8,leopardus pardalis,17,17.0
+17,tinamus major,147,crax rubra,16,30.8
+47,syncerus caffer,32,loxodonta africana,16,20.3
+87,nasua narica,146,meleagris ocellata,16,16.0

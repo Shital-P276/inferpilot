@@ -99,26 +99,15 @@ def _report(test_accs, test_aurocs, test_avg_auroc):
     resource_norm = load_resource_norm()
     costs = np.array([resource_norm[t] for t in TIER_NAMES])
 
-    v1_aurocs = [0.6764, 0.7692, 0.6748]
-    v2_aurocs = [0.5066, 0.5566, 0.5682]
-    v1_avg = float(np.nanmean(v1_aurocs))
-    v2_avg = float(np.nanmean(v2_aurocs))
-
-    print(f"\n{'='*72}")
-    print(f"THREE-WAY AUROC COMPARISON")
-    print(f"{'='*72}")
-    print(f"{'Tier':9s} {'V1':>8s} {'V2':>8s} {'V2b':>8s} {'V2b-V1':>8s} {'V2b-V2':>8s}")
-    print(f"{'-'*72}")
+    print(f"\n{'='*60}")
+    print(f"iWildCam-tier CorrectnessGateNetV2b -- Test AUROC")
+    print(f"{'='*60}")
     for i, tier in enumerate(TIER_NAMES):
-        d1 = test_aurocs[i] - v1_aurocs[i]
-        d2 = test_aurocs[i] - v2_aurocs[i]
-        print(f"{tier:9s} {v1_aurocs[i]:8.4f} {v2_aurocs[i]:8.4f} "
-              f"{test_aurocs[i]:8.4f} {d1:+8.4f} {d2:+8.4f}")
-    print(f"{'-'*72}")
-    d1a = test_avg_auroc - v1_avg
-    d2a = test_avg_auroc - v2_avg
-    print(f"{'avg':9s} {v1_avg:8.4f} {v2_avg:8.4f} "
-          f"{test_avg_auroc:8.4f} {d1a:+8.4f} {d2a:+8.4f}")
+        print(f"  {tier:9s}: {test_aurocs[i]:.4f}")
+    print(f"  avg: {test_avg_auroc:.4f}")
+    print(f"\nNOTE: prior V1/V2/V2b AUROC comparisons (0.6764/0.7692/0.6748 etc.) "
+          f"were measured on the OLD produce-tier dataset and are NOT comparable "
+          f"to this iWildCam-tier result -- different task, different data.")
 
     print(f"\nLatency: V1=~0.5ms(from-scratch)  V2=1.620ms  V2b=1.868ms")
     print(f"Trainable params: V1=24,003  V2=123  V2b=24,483")

@@ -1,10 +1,14 @@
 """
 Benchmark CorrectnessGateNetV2b inference latency.
-Same methodology: 10 warmup (discarded) + 100 timed runs, CUDA,
-torch.cuda.synchronize(), single fixed test image, sorted avg/p50/p95.
-HARD GATE: avg must stay under 2.0ms.
+Same methodology: 10 warmup (discarded) + 100 timed runs, single fixed test
+image, sorted avg/p50/p95. Supports both GPU and CPU via env var.
+
+Usage:
+    python benchmark_correctness_gate_v2b.py                # GPU (default)
+    DEVICE=cpu python benchmark_correctness_gate_v2b.py     # CPU
 """
 import json
+import os
 import time
 from pathlib import Path
 
@@ -21,7 +25,7 @@ OUTPUT_PATH = BASE_DIR / "training" / "checkpoints" / "correctness_gate_v2b_late
 LABELS_PATH = BASE_DIR / "router" / "utility_labels.csv"
 TIER_BENCHMARKS_PATH = BASE_DIR / "router" / "model_benchmarks.json"
 
-DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+DEVICE = torch.device(os.environ.get("DEVICE", "cuda" if torch.cuda.is_available() else "cpu"))
 NUM_WARMUP = 10
 NUM_RUNS = 100
 IMG_SIZE = 224

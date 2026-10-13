@@ -1,0 +1,16 @@
+true_id,true_name,pred_id,pred_name,count,pct_of_true_class
+39,equus ferus,0,empty,37,37.0
+52,madoqua guentheri,0,empty,32,32.0
+36,aepyceros melampus,54,nanger granti,27,27.0
+95,acryllium vulturinum,52,madoqua guentheri,27,28.1
+146,meleagris ocellata,0,empty,27,27.0
+87,nasua narica,0,empty,24,24.0
+96,equus grevyi,0,empty,24,37.5
+3,cuniculus paca,8,leopardus pardalis,23,63.9
+37,crocuta crocuta,0,empty,22,31.0
+48,equus quagga,0,empty,22,23.9
+148,agouti paca,4,puma concolor,22,22.0
+148,agouti paca,8,leopardus pardalis,22,22.0
+17,tinamus major,0,empty,21,40.4
+61,oryx beisa,24,bos taurus,21,80.8
+153,mazama temama,0,empty,21,26.2

@@ -1,7 +1,7 @@
 """
-Core experiment: compares all 7 routing strategies (Always Fast, Always Heavy,
+Core experiment: compares all 8 routing strategies (Always Fast, Always Heavy,
 Round Robin, Rule-Based, ML Router, Single-Shot Router, CorrectnessGateNet
-Router) on ACCURACY using the held-out image set.
+Router, Hybrid Gate) on ACCURACY using the held-out image set.
 
 Sends each held-out image through /route?strategy=X for every strategy,
 records routed_tier, predicted_class vs true_label, and gateway_latency_ms.
@@ -37,7 +37,7 @@ SUMMARY_PATH = Path(os.environ.get(
 ))
 
 GATEWAY_URL = "http://localhost:8000/route"
-STRATEGIES = ["always_fast", "always_heavy", "round_robin", "rule_based", "ml_router", "single_shot_router", "correctness_gate_router"]
+STRATEGIES = ["always_fast", "always_heavy", "round_robin", "rule_based", "ml_router", "single_shot_router", "correctness_gate_router", "hybrid_gate", "hybrid_dumb"]
 
 TIMEOUT_S = 15.0
 
